@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.9.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "prop-types": "^15.8.1"
   }
 }
