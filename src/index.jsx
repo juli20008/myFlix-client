@@ -4,10 +4,15 @@ import { MovieCard } from "../movie-card/movie-card";
 
 
 // Import statement to indicate that you need to bundle `./index.scss`
+import Container from 'react-bootstrap/Container';
 import "./index.scss";
 
 const App = () => {
-  return <MainView />;
+  return (
+    <Container>
+      <MainView />
+    </Container>
+  );
  };
  
  const container = document.querySelector("#root");
