@@ -1,29 +1,67 @@
+import { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import "./movie-view.scss";
 
-export const MovieView = ({ movie }) => {
+export const MovieView = ({ movies, user, setUser, token }) => {
   const { movieId } = useParams();
+  const [ isFavorite, setIsFavorite ] = useState(false);
 
-  const movie = movies.find((b) => b.id === movieId);
+  useEffect(() => {
+     const isFavorited = user.FavoriteMovies.includes(movieId)
+     setIsFavorite(isFavorited)
+  }, []);
 
-    return (
-      <div>
-        <div>
-          <img className="w-100" src={movie.image} />
-        </div>
-        <div>
-          <span>Title: </span>
-          <span>{movie.title}</span>
-        </div> 
-        <div>
-          <span>Author: </span>
-          <span>{movie.director}</span>
-        </div>
-        <Link to={`/`}>
-        <button className="back-button">Back</button>
-      </Link>
-      </div>
-    );
+  const removeFavorite = () => {
+      fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`, {
+          method: "DELETE",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+          }
+      }).then((response) => {
+          if (response.ok) {
+              return response.json()
+          }
+      }).then((data) => {
+          setIsFavorite(false);
+          localStorage.setItem("user", JSON.stringify(data));
+          setUser(data);
+      })
   };
 
+  const addToFavorite = () => {
+      fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+          }
+      }).then((response) => {
+          if (response.ok) {
+              return response.json()
+          }
+      }).then((data) => {
+          setIsFavorite(true);
+          localStorage.setItem("user", JSON.stringify(data));
+          setUser(data);
+      })
+  }
+
+  const movie = movies.find((m) => m.id === movieId);
+
+  return (
+     <div>
+             {isFavorite ? (
+              <Button onClick={removeFavorite}>Remove from favorites</Button>
+          ) : (
+              <Button onClick={addToFavorite}>Add to favorites</Button>
+          )}
+
+          <Link to={"/"}>
+          <Button>Back</Button>
+          </Link>
+      </div>
+  )
+}

@@ -7,7 +7,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
+import { ProfileView } from "../profile-view/profile-view";
 
+const onLogout = () => {
+  setUser(null);
+  setToken(null);
+  localStorage.clear();
+}
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -83,6 +89,7 @@ return (
                           onLoggedIn={(user, token) => {
                             setUser(user);
                             setToken(token);
+                            onLogout={onLogout}
                           }}
                           />
                           </Col>
@@ -128,6 +135,16 @@ return (
                           }
                         />
                       </Routes>
+                      {user && (
+                          <Col md={1}>
+                              <Button
+                                  variant="secondary"
+                                  onClick={onLogout}
+                              >
+                                  Logout
+                              </Button>
+                          </Col>
+                   )}
                     </Row>
                   </BrowserRouter>
                 );
