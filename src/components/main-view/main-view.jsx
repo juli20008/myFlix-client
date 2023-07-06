@@ -89,8 +89,8 @@ return (
                           onLoggedIn={(user, token) => {
                             setUser(user);
                             setToken(token);
-                            onLogout={onLogout}
                           }}
+                          onLogout={onLogout} // Corrected prop name
                           />
                           </Col>
                          )}
@@ -126,7 +126,7 @@ return (
                                 <>
                                   {movies.map((movie) => (
                                     <Col className="mb-4" key={movie.id} md={3}>
-                                      <BookCard movie={movie} />
+                                      <MovieCard movie={movie} />
                                     </Col>
                                   ))}
                                 </>

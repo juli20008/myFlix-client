@@ -5,15 +5,15 @@ import { Link } from "react-router-dom";
 import "./movie-view.scss";
 
 export const MovieView = ({ movies, user, setUser, token }) => {
-  const { movieId } = useParams();
-  const [ isFavorite, setIsFavorite ] = useState(false);
+  let { movieId } = useParams();
+  let [ isFavorite, setIsFavorite ] = useState(false);
 
   useEffect(() => {
      const isFavorited = user.FavoriteMovies.includes(movieId)
      setIsFavorite(isFavorited)
-  }, []);
+    }, [movieId, user.FavoriteMovies]);
 
-  const removeFavorite = () => {
+  function removeFavorite () {
       fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`, {
           method: "DELETE",
           headers: {
@@ -31,7 +31,7 @@ export const MovieView = ({ movies, user, setUser, token }) => {
       })
   };
 
-  const addToFavorite = () => {
+  function addToFavorite () {
       fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`, {
           method: "PUT",
           headers: {
@@ -49,7 +49,7 @@ export const MovieView = ({ movies, user, setUser, token }) => {
       })
   }
 
-  const movie = movies.find((m) => m.id === movieId);
+  let movie = movies.find((m) => m.id === movieId);
 
   return (
      <div>
