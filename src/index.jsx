@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { MainView } from "./components/main-view/main-view";
-import { MovieCard } from "../movie-card/movie-card";
+import { MovieCard } from "./components/movie-card/movie-card";
 
 // Import statement to indicate that you need to bundle `./index.scss`
 import Container from 'react-bootstrap/Container';
