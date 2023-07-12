@@ -8,6 +8,9 @@ import Col from "react-bootstrap/Col";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { ProfileView } from "../profile-view/profile-view";
+import Button from "react-bootstrap/Button";
+import { title } from "process";
+
 
 const onLogout = () => {
   setUser(null);
@@ -16,11 +19,30 @@ const onLogout = () => {
 }
 
 export const MainView = () => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  let storedUser = null;
+  const storedUserJSON = localStorage.getItem("user");
+  if (storedUserJSON) {
+      try {
+          storedUser = JSON.parse(storedUserJSON);
+      } catch (e) {}
+  }
   const storedToken = localStorage.getItem("token");
+  const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
-  const [user, setUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredMovies, setFilteredMovies] = useState([]);
+
+  const handleSearch = (event) => {
+    const searchQuery = event.target.value.toLowerCase();
+    setSearchTerm(searchQuery);
+
+    const filtered = movies.filter((movie) =>
+        movie.title.toLowerCase().includes(searchQuery)
+    );
+
+    setFilteredMovies(filtered);
+};
 
   useEffect(() => {
     if (!token) return;
@@ -32,7 +54,7 @@ export const MainView = () => {
       .then((data) => {
         const moviesFromApi = data.map((movie) => {
           return {
-            _id: movie.id,
+            id: movie._id,
             Title: movie.Title,
             ImagePath: movie.ImagePath,
             Description: movie.Description,
@@ -46,6 +68,7 @@ export const MainView = () => {
           };
         });
         setMovies(moviesFromApi);
+        setFilteredMovies(moviesFromApi);
       });
 
   }, [token]);
@@ -63,18 +86,16 @@ return (
       <Row className="justify-content-md-center"> 
         <Routes>
          <Route
-            path="/signup"
+            path="/users"
             element={
-              <>
-              {!user ? (
+          
+              user ? (
               <Navigate to="/" />
               ) : (
                   <Col md={5}>
                     <SignupView />
                   </Col>
-                 )}
-                 </>
-   
+                 )
                }
              />
               <Route
@@ -108,7 +129,10 @@ return (
                                   <Col>The list is empty!</Col>
                                 ) : (
                                   <Col md={8}>
-                                    <MovieView movies={movies} />
+                                            movies={movies}
+                                            user={user}
+                                            username={user.Username}
+                                            favoriteMovies={user.FavoriteMovies}
                                   </Col>
                                 )}
                               </>
@@ -118,34 +142,53 @@ return (
                           path="/"
                           element={
                             <>
-                              {!user ? (
-                                <Navigate to="/login" replace />
-                              ) : movies.length === 0 ? (
-                                <Col>The list is empty!</Col>
-                              ) : (
-                                <>
-                                  {movies.map((movie) => (
-                                    <Col className="mb-4" key={movie.id} md={3}>
-                                      <MovieCard movie={movie} />
-                                    </Col>
-                                  ))}
-                                </>
-                              )}
+                            {!user ? (
+                                    <Navigate to="/login" replace />
+                                ) : (
+                                    <>
+                                        <Row>
+                                            <Col
+                                                className="d-flex justify-content-center"
+                                                style={{
+                                                    marginTop: 90,
+                                                    marginBottom: 20,
+                                                }}
+                                            >
+                                                <input
+                                                    type="text"
+                                                    className="form-control form-control-lg"
+                                                    placeholder="Search Movies"
+                                                    value={searchTerm}
+                                                    onChange={handleSearch}
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            {filteredMovies.length === 0 ? (
+                                                <Col>The list is empty!</Col>
+                                            ) : (
+                                                filteredMovies.map((movie) => (
+                                                    <Col
+                                                        className="mb-4"
+                                                        key={movie.id}
+                                                        sm={12}
+                                                        md={6}
+                                                        lg={4}
+                                                    >
+                                                        <MovieCard
+                                                            movie={movie}
+                                                        />
+                                                    </Col>
+                                                ))
+                                            )}
+                                        </Row>
+                                    </>
+                                )}
                             </>
                           }
                         />
                       </Routes>
-                      {user && (
-                          <Col md={1}>
-                              <Button
-                                  variant="secondary"
-                                  onClick={onLogout}
-                              >
-                                  Logout
-                              </Button>
-                          </Col>
-                   )}
                     </Row>
                   </BrowserRouter>
                 );
-              };
+              };  

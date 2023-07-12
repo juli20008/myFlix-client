@@ -1,4 +1,6 @@
 import{ useState } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 export const SignupView = () => {
   const [username, setUsername] = useState("");
@@ -10,13 +12,13 @@ export const SignupView = () => {
     event.preventDefault();
 
     const data = {
-      Username: username,
-      Password: password,
+      username: username,
+      password: password,
       Email: email,
       Birthday: birthday
     };
 
-    fetch("https://young-depths-90911.herokuapp.com/signup", {
+    fetch("https://young-depths-90911.herokuapp.com/users", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -71,7 +73,9 @@ export const SignupView = () => {
           required
         />
       </Form.Group>
-      <button type="submit">Submit</button>
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
     </form>
   );
 };
