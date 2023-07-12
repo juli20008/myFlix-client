@@ -11,34 +11,27 @@ export const NavigationBar = ({ user, onLoggedOut }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {user ? (
-              <>
-                <Nav.Link as={Link} to="/">
-                  Home
-                </Nav.Link>
-                <Nav.Link onClick={onLoggedOut}>Logout</Nav.Link>
-              </>
-            ) : (
-              <>
-                <Nav.Link as={Link} to="/signup">
-                  Signup
-                </Nav.Link>
-                <Nav.Link as={Link} to="/login">
-                  Login
-                </Nav.Link>
-              </>
-            )}
-               {user && (
+          {!user && (
                             <>
-                            <Nav.Link as={Link} to="/">
-                                Home
-                            </Nav.Link>
-                            <Nav.Link onClick={onLoggedOut}>
-                                Logout
-                            </Nav.Link>
-                            <Nav.Link as={Link} to="/profile">
-                                My Profile
-                            </Nav.Link>
+                                <Nav.Link as={Link} to="/login">
+                                    Login
+                                </Nav.Link>
+                                <Nav.Link as={Link} to="/users">
+                                    Signup
+                                </Nav.Link>
+                            </>
+                        )}
+                        {user && (
+                            <>
+                                <Nav.Link as={Link} to="/">
+                                    Home
+                                </Nav.Link>
+                                <Nav.Link as={Link} to="/users">
+                                    Profile
+                                </Nav.Link>
+                                <Nav.Link onClick={onLoggedOut}>
+                                    Logout
+                                </Nav.Link>
                             </>
                         )}
           </Nav>
