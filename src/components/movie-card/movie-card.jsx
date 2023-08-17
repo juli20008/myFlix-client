@@ -1,3 +1,4 @@
+// .components/movie-card
 // Here you import the PropTypes library
 import React from "react";
 import PropTypes from "prop-types";
