@@ -10,7 +10,10 @@ import "./movie-view.scss";
 export const MovieView = ({ movies, user, setUser, token }) => {
   const { movieId } = useParams();
   const [isFavorite, setIsFavorite] = useState(false);
-
+  console.log(movies);
+  console.log(user);
+  console.log(setUser);
+  console.log(token);
   useEffect(() => {
     const isFavorited = user.FavoriteMovies.includes(movieId);
     setIsFavorite(isFavorited);
@@ -18,7 +21,7 @@ export const MovieView = ({ movies, user, setUser, token }) => {
 
   function removeFavorite() {
     fetch(
-      `https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`,
+      `https://young-depths-90911.herokuapp.com/users/${user.username}/movies/${movieId}`,
       {
         method: "DELETE",
         headers: {
@@ -41,9 +44,9 @@ export const MovieView = ({ movies, user, setUser, token }) => {
 
   function addToFavorite() {
     fetch(
-      `https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`,
+      `https://young-depths-90911.herokuapp.com/users/${user.username}/movies/${movieId}`,
       {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -66,37 +69,40 @@ export const MovieView = ({ movies, user, setUser, token }) => {
 
   return (
     <div>
-      {/*       <div>
+      <div>
         <span>
           <img src={movie.ImagePath} width="30%" />
         </span>
-      </div> */}
+      </div>
 
       <div>
         <span>Title: </span>
         <span> {movie.Title} </span>
       </div>
-{/* 
+
       <div>
         <span>Director: </span>
         <span> {movie.Director.Name} </span>
-      </div> */}
-      {/* 
+      </div>
+
       <div>
         <span>Genre: </span>
-        <span> {movie.Genre} </span>
-      </div> */}
+        <span> {movie.Genre.Name} </span>
+      </div>
 
-      {/*    <div>
+      <div>
         <span>Director: </span>
-        <span> {movie.Director} </span>
-      </div> */}
+        <span> {movie.Director.Name} </span>
+      </div>
 
-      {/*   <div>
+      <div>
         <span>Featured: </span>
         <span> {movie.Featured} </span>
-      </div> */}
-
+      </div>
+      <div>
+        <span>Description: </span>
+        <span> {movie.Description} </span>
+      </div>
       {isFavorite ? (
         <Button onClick={removeFavorite}>Remove from favourite movies</Button>
       ) : (

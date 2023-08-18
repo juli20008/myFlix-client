@@ -27213,7 +27213,7 @@ const MainView = ()=>{
     const handleSearch = (event)=>{
         const searchQuery = event.target.value.toLowerCase();
         setSearchTerm(searchQuery);
-        const filtered = movies.filter((movie)=>movie.title.toLowerCase().includes(searchQuery));
+        const filtered = movies.filter((movie)=>movie.Title.toLowerCase().includes(searchQuery));
         setFilteredMovies(filtered);
     };
     (0, _react.useEffect)(()=>{
@@ -27307,21 +27307,31 @@ const MainView = ()=>{
                                     children: "The list is empty!"
                                 }, void 0, false, void 0, void 0) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _colDefault.default), {
                                     md: 8,
-                                    children: [
-                                        "movies=",
-                                        movies,
-                                        "user=",
-                                        user,
-                                        "username=",
-                                        user.Username,
-                                        "favoriteMovies=",
-                                        user.FavoriteMovies
-                                    ]
-                                }, void 0, true, void 0, void 0)
+                                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieView.MovieView), {
+                                        movies: movies,
+                                        user: user,
+                                        setUser: setUser1,
+                                        token: token
+                                    }, void 0, false, void 0, void 0)
+                                }, void 0, false, void 0, void 0)
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
                             lineNumber: 117,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
+                            path: "/users",
+                            element: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _profileView.ProfileView), {
+                                user: user,
+                                token: token,
+                                setUser: setUser1,
+                                movies: movies,
+                                onLogout: handleLogout
+                            }, void 0, false, void 0, void 0)
+                        }, void 0, false, {
+                            fileName: "src/components/main-view/main-view.jsx",
+                            lineNumber: 138,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
@@ -27366,7 +27376,7 @@ const MainView = ()=>{
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 136,
+                            lineNumber: 150,
                             columnNumber: 11
                         }, undefined)
                     ]
@@ -31106,15 +31116,13 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "mergeRefs", ()=>mergeRefs);
 var _react = require("react");
-var toFnRef = function toFnRef(ref) {
-    return !ref || typeof ref === "function" ? ref : function(value) {
+const toFnRef = (ref)=>!ref || typeof ref === "function" ? ref : (value)=>{
         ref.current = value;
     };
-};
 function mergeRefs(refA, refB) {
-    var a = toFnRef(refA);
-    var b = toFnRef(refB);
-    return function(value) {
+    const a = toFnRef(refA);
+    const b = toFnRef(refB);
+    return (value)=>{
         if (a) a(value);
         if (b) b(value);
     };
@@ -31135,9 +31143,7 @@ function mergeRefs(refA, refB) {
  * @param refB A Callback or mutable Ref
  * @category refs
  */ function useMergedRefs(refA, refB) {
-    return (0, _react.useMemo)(function() {
-        return mergeRefs(refA, refB);
-    }, [
+    return (0, _react.useMemo)(()=>mergeRefs(refA, refB), [
         refA,
         refB
     ]);
@@ -31362,9 +31368,9 @@ var _react = require("react");
 var _useCommittedRef = require("./useCommittedRef");
 var _useCommittedRefDefault = parcelHelpers.interopDefault(_useCommittedRef);
 function useEventCallback(fn) {
-    var ref = (0, _useCommittedRefDefault.default)(fn);
-    return (0, _react.useCallback)(function() {
-        return ref.current && ref.current.apply(ref, arguments);
+    const ref = (0, _useCommittedRefDefault.default)(fn);
+    return (0, _react.useCallback)(function(...args) {
+        return ref.current && ref.current(...args);
     }, [
         ref
     ]);
@@ -31383,8 +31389,8 @@ var _react = require("react");
  *
  * @param value The `Ref` value
  */ function useCommittedRef(value) {
-    var ref = (0, _react.useRef)(value);
-    (0, _react.useEffect)(function() {
+    const ref = (0, _react.useRef)(value);
+    (0, _react.useEffect)(()=>{
         ref.current = value;
     }, [
         value
@@ -31504,15 +31510,12 @@ parcelHelpers.export(exports, "default", ()=>useEventListener);
 var _react = require("react");
 var _useEventCallback = require("./useEventCallback");
 var _useEventCallbackDefault = parcelHelpers.interopDefault(_useEventCallback);
-function useEventListener(eventTarget, event, listener, capture) {
-    if (capture === void 0) capture = false;
-    var handler = (0, _useEventCallbackDefault.default)(listener);
-    (0, _react.useEffect)(function() {
-        var target = typeof eventTarget === "function" ? eventTarget() : eventTarget;
+function useEventListener(eventTarget, event, listener, capture = false) {
+    const handler = (0, _useEventCallbackDefault.default)(listener);
+    (0, _react.useEffect)(()=>{
+        const target = typeof eventTarget === "function" ? eventTarget() : eventTarget;
         target.addEventListener(event, handler, capture);
-        return function() {
-            return target.removeEventListener(event, handler, capture);
-        };
+        return ()=>target.removeEventListener(event, handler, capture);
     }, [
         eventTarget
     ]);
@@ -31525,11 +31528,8 @@ parcelHelpers.export(exports, "default", ()=>useGlobalListener);
 var _useEventListener = require("./useEventListener");
 var _useEventListenerDefault = parcelHelpers.interopDefault(_useEventListener);
 var _react = require("react");
-function useGlobalListener(event, handler, capture) {
-    if (capture === void 0) capture = false;
-    var documentTarget = (0, _react.useCallback)(function() {
-        return document;
-    }, []);
+function useGlobalListener(event, handler, capture = false) {
+    const documentTarget = (0, _react.useCallback)(()=>document, []);
     return (0, _useEventListenerDefault.default)(documentTarget, event, handler, capture);
 }
 
@@ -31553,28 +31553,65 @@ var _useCommittedRefDefault = parcelHelpers.interopDefault(_useCommittedRef);
  *
  * @param fn an function run on each interval
  * @param ms The milliseconds duration of the interval
- */ function useInterval(fn, ms, paused, runImmediately) {
-    if (paused === void 0) paused = false;
-    if (runImmediately === void 0) runImmediately = false;
-    var handle;
-    var fnRef = (0, _useCommittedRefDefault.default)(fn); // this ref is necessary b/c useEffect will sometimes miss a paused toggle
+ */ /**
+ * Creates a pausable `setInterval` that is properly cleaned up when a component unmounted
+ *
+ * ```tsx
+ *  const [paused, setPaused] = useState(false)
+ *  const [timer, setTimer] = useState(0)
+ *
+ *  useInterval(() => setTimer(i => i + 1), 1000, paused)
+ *
+ *  return (
+ *    <span>
+ *      {timer} seconds past
+ *
+ *      <button onClick={() => setPaused(p => !p)}>{paused ? 'Play' : 'Pause' }</button>
+ *    </span>
+ * )
+ * ```
+ *
+ * @param fn an function run on each interval
+ * @param ms The milliseconds duration of the interval
+ * @param paused Whether or not the interval is currently running
+ */ /**
+ * Creates a pausable `setInterval` that _fires_ immediately and is
+ * properly cleaned up when a component unmounted
+ *
+ * ```tsx
+ *  const [timer, setTimer] = useState(-1)
+ *  useInterval(() => setTimer(i => i + 1), 1000, false, true)
+ *
+ *  // will update to 0 on the first effect
+ *  return <span>{timer} seconds past</span>
+ * ```
+ *
+ * @param fn an function run on each interval
+ * @param ms The milliseconds duration of the interval
+ * @param paused Whether or not the interval is currently running
+ * @param runImmediately Whether to run the function immediately on mount or unpause
+ * rather than waiting for the first interval to elapse
+ *
+
+ */ function useInterval(fn, ms, paused = false, runImmediately = false) {
+    let handle;
+    const fnRef = (0, _useCommittedRefDefault.default)(fn);
+    // this ref is necessary b/c useEffect will sometimes miss a paused toggle
     // orphaning a setTimeout chain in the aether, so relying on it's refresh logic is not reliable.
-    var pausedRef = (0, _useCommittedRefDefault.default)(paused);
-    var tick = function tick() {
+    const pausedRef = (0, _useCommittedRefDefault.default)(paused);
+    const tick = ()=>{
         if (pausedRef.current) return;
         fnRef.current();
         schedule(); // eslint-disable-line no-use-before-define
     };
-    var schedule = function schedule() {
+    const schedule = ()=>{
         clearTimeout(handle);
         handle = setTimeout(tick, ms);
     };
-    (0, _react.useEffect)(function() {
+    (0, _react.useEffect)(()=>{
         if (runImmediately) tick();
         else schedule();
-        return function() {
-            return clearTimeout(handle);
-        };
+        return ()=>clearTimeout(handle);
     }, [
         paused,
         runImmediately
@@ -31588,16 +31625,16 @@ parcelHelpers.defineInteropFlag(exports);
 var _react = require("react");
 var _useCommittedRef = require("./useCommittedRef");
 var _useCommittedRefDefault = parcelHelpers.interopDefault(_useCommittedRef);
-function useRafInterval(fn, ms, paused) {
-    if (paused === void 0) paused = false;
-    var handle;
-    var start = new Date().getTime();
-    var fnRef = (0, _useCommittedRefDefault.default)(fn); // this ref is necessary b/c useEffect will sometimes miss a paused toggle
+function useRafInterval(fn, ms, paused = false) {
+    let handle;
+    let start = new Date().getTime();
+    const fnRef = (0, _useCommittedRefDefault.default)(fn);
+    // this ref is necessary b/c useEffect will sometimes miss a paused toggle
     // orphaning a setTimeout chain in the aether, so relying on it's refresh logic is not reliable.
-    var pausedRef = (0, _useCommittedRefDefault.default)(paused);
+    const pausedRef = (0, _useCommittedRefDefault.default)(paused);
     function loop() {
-        var current = new Date().getTime();
-        var delta = current - start;
+        const current = new Date().getTime();
+        const delta = current - start;
         if (pausedRef.current) return;
         if (delta >= ms && fnRef.current) {
             fnRef.current();
@@ -31606,11 +31643,9 @@ function useRafInterval(fn, ms, paused) {
         cancelAnimationFrame(handle);
         handle = requestAnimationFrame(loop);
     }
-    (0, _react.useEffect)(function() {
+    (0, _react.useEffect)(()=>{
         handle = requestAnimationFrame(loop);
-        return function() {
-            return cancelAnimationFrame(handle);
-        };
+        return ()=>cancelAnimationFrame(handle);
     }, []);
 }
 exports.default = useRafInterval;
@@ -31620,27 +31655,15 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>useMergeState);
 var _react = require("react");
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source)if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
 function useMergeState(initialState) {
-    var _useState = (0, _react.useState)(initialState), state = _useState[0], setState = _useState[1];
-    var updater = (0, _react.useCallback)(function(update) {
+    const [state, setState] = (0, _react.useState)(initialState);
+    const updater = (0, _react.useCallback)((update)=>{
         if (update === null) return;
-        if (typeof update === "function") setState(function(state) {
-            var nextState = update(state);
-            return nextState == null ? state : _extends({}, state, nextState);
+        if (typeof update === "function") setState((state)=>{
+            const nextState = update(state);
+            return nextState == null ? state : Object.assign({}, state, nextState);
         });
-        else setState(function(state) {
-            return _extends({}, state, update);
-        });
+        else setState((state)=>Object.assign({}, state, update));
     }, [
         setState
     ]);
@@ -31657,8 +31680,8 @@ parcelHelpers.export(exports, "default", ()=>useMergeStateFromProps);
 var _useMergeState = require("./useMergeState");
 var _useMergeStateDefault = parcelHelpers.interopDefault(_useMergeState);
 function useMergeStateFromProps(props, gDSFP, initialState) {
-    var _useMergeState = (0, _useMergeStateDefault.default)(initialState), state = _useMergeState[0], setState = _useMergeState[1];
-    var nextState = gDSFP(props, state);
+    const [state, setState] = (0, _useMergeStateDefault.default)(initialState);
+    const nextState = gDSFP(props, state);
     if (nextState !== null) setState(nextState);
     return [
         state,
@@ -31672,13 +31695,11 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>useMounted);
 var _react = require("react");
 function useMounted() {
-    var mounted = (0, _react.useRef)(true);
-    var isMounted = (0, _react.useRef)(function() {
-        return mounted.current;
-    });
-    (0, _react.useEffect)(function() {
+    const mounted = (0, _react.useRef)(true);
+    const isMounted = (0, _react.useRef)(()=>mounted.current);
+    (0, _react.useEffect)(()=>{
         mounted.current = true;
-        return function() {
+        return ()=>{
             mounted.current = false;
         };
     }, []);
@@ -31691,8 +31712,8 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>usePrevious);
 var _react = require("react");
 function usePrevious(value) {
-    var ref = (0, _react.useRef)(null);
-    (0, _react.useEffect)(function() {
+    const ref = (0, _react.useRef)(null);
+    (0, _react.useEffect)(()=>{
         ref.current = value;
     });
     return ref.current;
@@ -31704,13 +31725,13 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>useImage);
 var _react = require("react");
 function useImage(imageOrUrl, crossOrigin) {
-    var _useState = (0, _react.useState)({
+    const [state, setState] = (0, _react.useState)({
         image: null,
         error: null
-    }), state = _useState[0], setState = _useState[1];
-    (0, _react.useEffect)(function() {
+    });
+    (0, _react.useEffect)(()=>{
         if (!imageOrUrl) return undefined;
-        var image;
+        let image;
         if (typeof imageOrUrl === "string") {
             image = new Image();
             if (crossOrigin) image.crossOrigin = crossOrigin;
@@ -31719,7 +31740,7 @@ function useImage(imageOrUrl, crossOrigin) {
             image = imageOrUrl;
             if (image.complete && image.naturalHeight > 0) {
                 setState({
-                    image: image,
+                    image,
                     error: null
                 });
                 return;
@@ -31727,19 +31748,19 @@ function useImage(imageOrUrl, crossOrigin) {
         }
         function onLoad() {
             setState({
-                image: image,
+                image,
                 error: null
             });
         }
         function onError(error) {
             setState({
-                image: image,
-                error: error
+                image,
+                error
             });
         }
         image.addEventListener("load", onLoad);
         image.addEventListener("error", onError);
-        return function() {
+        return ()=>{
             image.removeEventListener("load", onLoad);
             image.removeEventListener("error", onError);
         };
@@ -31757,27 +31778,27 @@ parcelHelpers.export(exports, "default", ()=>useResizeObserver);
 var _react = require("react");
 var _useIsomorphicEffect = require("./useIsomorphicEffect");
 var _useIsomorphicEffectDefault = parcelHelpers.interopDefault(_useIsomorphicEffect);
-var targetMap = new WeakMap();
-var resizeObserver;
+const targetMap = new WeakMap();
+let resizeObserver;
 function getResizeObserver() {
     // eslint-disable-next-line no-return-assign
-    return resizeObserver = resizeObserver || new window.ResizeObserver(function(entries) {
-        entries.forEach(function(entry) {
-            var handler = targetMap.get(entry.target);
+    return resizeObserver = resizeObserver || new window.ResizeObserver((entries)=>{
+        entries.forEach((entry)=>{
+            const handler = targetMap.get(entry.target);
             if (handler) handler(entry.contentRect);
         });
     });
 }
 function useResizeObserver(element) {
-    var _useState = (0, _react.useState)(null), rect = _useState[0], setRect = _useState[1];
-    (0, _useIsomorphicEffectDefault.default)(function() {
+    const [rect, setRect] = (0, _react.useState)(null);
+    (0, _useIsomorphicEffectDefault.default)(()=>{
         if (!element) return;
         getResizeObserver().observe(element);
         setRect(element.getBoundingClientRect());
-        targetMap.set(element, function(rect) {
+        targetMap.set(element, (rect)=>{
             setRect(rect);
         });
-        return function() {
+        return ()=>{
             targetMap.delete(element);
         };
     }, [
@@ -31791,10 +31812,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _react = require("react");
 var global = arguments[3];
-var isReactNative = typeof global !== "undefined" && // @ts-ignore
+const isReactNative = typeof global !== "undefined" && // @ts-ignore
 global.navigator && // @ts-ignore
 global.navigator.product === "ReactNative";
-var isDOM = typeof document !== "undefined";
+const isDOM = typeof document !== "undefined";
 /**
  * Is `useLayoutEffect` in a DOM or React Native environment, otherwise resolves to useEffect
  * Only useful to avoid the console warning.
@@ -32660,8 +32681,8 @@ var _react = require("react");
  *
  * @category effects
  */ function useUpdateEffect(fn, deps) {
-    var isFirst = (0, _react.useRef)(true);
-    (0, _react.useEffect)(function() {
+    const isFirst = (0, _react.useRef)(true);
+    (0, _react.useEffect)(()=>{
         if (isFirst.current) {
             isFirst.current = false;
             return;
@@ -32687,25 +32708,19 @@ var _useWillUnmountDefault = parcelHelpers.interopDefault(_useWillUnmount);
  * resulting in the timeout being executed immediately.
  *
  * via: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout
- */ var MAX_DELAY_MS = Math.pow(2, 31) - 1;
+ */ const MAX_DELAY_MS = 2 ** 31 - 1;
 function setChainedTimeout(handleRef, fn, timeoutAtMs) {
-    var delayMs = timeoutAtMs - Date.now();
-    handleRef.current = delayMs <= MAX_DELAY_MS ? setTimeout(fn, delayMs) : setTimeout(function() {
-        return setChainedTimeout(handleRef, fn, timeoutAtMs);
-    }, MAX_DELAY_MS);
+    const delayMs = timeoutAtMs - Date.now();
+    handleRef.current = delayMs <= MAX_DELAY_MS ? setTimeout(fn, delayMs) : setTimeout(()=>setChainedTimeout(handleRef, fn, timeoutAtMs), MAX_DELAY_MS);
 }
 function useTimeout() {
-    var isMounted = (0, _useMountedDefault.default)(); // types are confused between node and web here IDK
-    var handleRef = (0, _react.useRef)();
-    (0, _useWillUnmountDefault.default)(function() {
-        return clearTimeout(handleRef.current);
-    });
-    return (0, _react.useMemo)(function() {
-        var clear = function clear() {
-            return clearTimeout(handleRef.current);
-        };
-        function set(fn, delayMs) {
-            if (delayMs === void 0) delayMs = 0;
+    const isMounted = (0, _useMountedDefault.default)();
+    // types are confused between node and web here IDK
+    const handleRef = (0, _react.useRef)();
+    (0, _useWillUnmountDefault.default)(()=>clearTimeout(handleRef.current));
+    return (0, _react.useMemo)(()=>{
+        const clear = ()=>clearTimeout(handleRef.current);
+        function set(fn, delayMs = 0) {
             if (!isMounted()) return;
             clear();
             if (delayMs <= MAX_DELAY_MS) // For simplicity, if the timeout is short, just set a normal timeout.
@@ -32713,8 +32728,8 @@ function useTimeout() {
             else setChainedTimeout(handleRef, fn, Date.now() + delayMs);
         }
         return {
-            set: set,
-            clear: clear
+            set,
+            clear
         };
     }, []);
 }
@@ -32727,12 +32742,8 @@ var _useUpdatedRef = require("./useUpdatedRef");
 var _useUpdatedRefDefault = parcelHelpers.interopDefault(_useUpdatedRef);
 var _react = require("react");
 function useWillUnmount(fn) {
-    var onUnmount = (0, _useUpdatedRefDefault.default)(fn);
-    (0, _react.useEffect)(function() {
-        return function() {
-            return onUnmount.current();
-        };
-    }, []);
+    const onUnmount = (0, _useUpdatedRefDefault.default)(fn);
+    (0, _react.useEffect)(()=>()=>onUnmount.current(), []);
 }
 
 },{"./useUpdatedRef":"cfaLu","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cfaLu":[function(require,module,exports) {
@@ -32741,7 +32752,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>useUpdatedRef);
 var _react = require("react");
 function useUpdatedRef(value) {
-    var valueRef = (0, _react.useRef)(value);
+    const valueRef = (0, _react.useRef)(value);
     valueRef.current = value;
     return valueRef;
 }
@@ -33224,9 +33235,11 @@ function useUncontrolledProp(propValue, defaultValue, handler) {
    */ if (!isProp && wasProp && stateValue !== defaultValue) setState(defaultValue);
     return [
         isProp ? propValue : stateValue,
-        (0, _react.useCallback)((value, ...args)=>{
-            if (handler) handler(value, ...args);
+        (0, _react.useCallback)((...args)=>{
+            const [value, ...rest] = args;
+            let returnValue = handler == null ? void 0 : handler(value, ...rest);
             setState(value);
+            return returnValue;
         }, [
             handler
         ])
@@ -33254,10 +33267,8 @@ parcelHelpers.export(exports, "default", ()=>useForceUpdate);
 var _react = require("react");
 function useForceUpdate() {
     // The toggling state value is designed to defeat React optimizations for skipping
-    // updates when they are stricting equal to the last state value
-    var _useReducer = (0, _react.useReducer)(function(state) {
-        return !state;
-    }, false), dispatch = _useReducer[1];
+    // updates when they are strictly equal to the last state value
+    const [, dispatch] = (0, _react.useReducer)((state)=>!state, false);
     return dispatch;
 }
 
@@ -33634,11 +33645,21 @@ parcelHelpers.defineInteropFlag(exports);
 var _react = require("react");
 var _useMounted = require("./useMounted");
 var _useMountedDefault = parcelHelpers.interopDefault(_useMounted);
-function useSafeState(state) {
-    var isMounted = (0, _useMountedDefault.default)();
+/**
+ * `useSafeState` takes the return value of a `useState` hook and wraps the
+ * setter to prevent updates onces the component has unmounted. Can used
+ * with `useMergeState` and `useStateAsync` as well
+ *
+ * @param state The return value of a useStateHook
+ *
+ * ```ts
+ * const [show, setShow] = useSafeState(useState(true));
+ * ```
+ */ function useSafeState(state) {
+    const isMounted = (0, _useMountedDefault.default)();
     return [
         state[0],
-        (0, _react.useCallback)(function(nextState) {
+        (0, _react.useCallback)((nextState)=>{
             if (!isMounted()) return;
             return state[1](nextState);
         }, [
@@ -35809,9 +35830,9 @@ var _ssr = require("@react-aria/ssr");
 },{"@react-aria/ssr":"dIzY2","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dIzY2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "SSRProvider", ()=>$704cf1d3b684cc5c$export$9f8ac96af4b1b2ae);
-parcelHelpers.export(exports, "useSSRSafeId", ()=>$704cf1d3b684cc5c$export$619500959fc48b26);
-parcelHelpers.export(exports, "useIsSSR", ()=>$704cf1d3b684cc5c$export$535bd6ca7f90a273);
+parcelHelpers.export(exports, "SSRProvider", ()=>$b5e257d569688ac6$export$9f8ac96af4b1b2ae);
+parcelHelpers.export(exports, "useSSRSafeId", ()=>$b5e257d569688ac6$export$619500959fc48b26);
+parcelHelpers.export(exports, "useIsSSR", ()=>$b5e257d569688ac6$export$535bd6ca7f90a273);
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 /*
@@ -35842,21 +35863,21 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 // being on the page at once, the prefix is set to a random number. SSRProvider
 // will reset this to zero for consistency between server and client, so in the
 // SSR case multiple copies of React Aria is not supported.
-const $704cf1d3b684cc5c$var$defaultContext = {
+const $b5e257d569688ac6$var$defaultContext = {
     prefix: String(Math.round(Math.random() * 10000000000)),
     current: 0,
     isSSR: false
 };
-const $704cf1d3b684cc5c$var$SSRContext = (0, _reactDefault.default).createContext($704cf1d3b684cc5c$var$defaultContext);
+const $b5e257d569688ac6$var$SSRContext = (0, _reactDefault.default).createContext($b5e257d569688ac6$var$defaultContext);
 // This is only used in React < 18.
-function $704cf1d3b684cc5c$var$LegacySSRProvider(props) {
-    let cur = (0, _react.useContext)($704cf1d3b684cc5c$var$SSRContext);
-    let counter = $704cf1d3b684cc5c$var$useCounter(cur === $704cf1d3b684cc5c$var$defaultContext);
+function $b5e257d569688ac6$var$LegacySSRProvider(props) {
+    let cur = (0, _react.useContext)($b5e257d569688ac6$var$SSRContext);
+    let counter = $b5e257d569688ac6$var$useCounter(cur === $b5e257d569688ac6$var$defaultContext);
     let [isSSR, setIsSSR] = (0, _react.useState)(true);
     let value = (0, _react.useMemo)(()=>({
             // If this is the first SSRProvider, start with an empty string prefix, otherwise
             // append and increment the counter.
-            prefix: cur === $704cf1d3b684cc5c$var$defaultContext ? "" : `${cur.prefix}-${counter}`,
+            prefix: cur === $b5e257d569688ac6$var$defaultContext ? "" : `${cur.prefix}-${counter}`,
             current: 0,
             isSSR: isSSR
         }), [
@@ -35866,28 +35887,28 @@ function $704cf1d3b684cc5c$var$LegacySSRProvider(props) {
     ]);
     // If on the client, and the component was initially server rendered,
     // then schedule a layout effect to update the component after hydration.
-    if (typeof window !== "undefined") (0, _react.useLayoutEffect)(()=>{
+    if (typeof document !== "undefined") (0, _react.useLayoutEffect)(()=>{
         setIsSSR(false);
     }, []);
-    return (0, _reactDefault.default).createElement($704cf1d3b684cc5c$var$SSRContext.Provider, {
+    return (0, _reactDefault.default).createElement($b5e257d569688ac6$var$SSRContext.Provider, {
         value: value
     }, props.children);
 }
-let $704cf1d3b684cc5c$var$warnedAboutSSRProvider = false;
-function $704cf1d3b684cc5c$export$9f8ac96af4b1b2ae(props) {
+let $b5e257d569688ac6$var$warnedAboutSSRProvider = false;
+function $b5e257d569688ac6$export$9f8ac96af4b1b2ae(props) {
     if (typeof (0, _reactDefault.default)["useId"] === "function") {
-        if (!$704cf1d3b684cc5c$var$warnedAboutSSRProvider) {
+        if (!$b5e257d569688ac6$var$warnedAboutSSRProvider) {
             console.warn("In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.");
-            $704cf1d3b684cc5c$var$warnedAboutSSRProvider = true;
+            $b5e257d569688ac6$var$warnedAboutSSRProvider = true;
         }
         return (0, _reactDefault.default).createElement((0, _reactDefault.default).Fragment, null, props.children);
     }
-    return (0, _reactDefault.default).createElement($704cf1d3b684cc5c$var$LegacySSRProvider, props);
+    return (0, _reactDefault.default).createElement($b5e257d569688ac6$var$LegacySSRProvider, props);
 }
-let $704cf1d3b684cc5c$var$canUseDOM = Boolean(typeof window !== "undefined" && window.document && window.document.createElement);
-let $704cf1d3b684cc5c$var$componentIds = new WeakMap();
-function $704cf1d3b684cc5c$var$useCounter(isDisabled = false) {
-    let ctx = (0, _react.useContext)($704cf1d3b684cc5c$var$SSRContext);
+let $b5e257d569688ac6$var$canUseDOM = Boolean(typeof window !== "undefined" && window.document && window.document.createElement);
+let $b5e257d569688ac6$var$componentIds = new WeakMap();
+function $b5e257d569688ac6$var$useCounter(isDisabled = false) {
+    let ctx = (0, _react.useContext)($b5e257d569688ac6$var$SSRContext);
     let ref = (0, _react.useRef)(null);
     // eslint-disable-next-line rulesdir/pure-render
     if (ref.current === null && !isDisabled) {
@@ -35904,8 +35925,8 @@ function $704cf1d3b684cc5c$var$useCounter(isDisabled = false) {
         // @ts-ignore
         let currentOwner = (_React___SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = (0, _reactDefault.default).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) === null || _React___SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED === void 0 ? void 0 : (_React___SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED_ReactCurrentOwner = _React___SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner) === null || _React___SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED_ReactCurrentOwner === void 0 ? void 0 : _React___SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED_ReactCurrentOwner.current;
         if (currentOwner) {
-            let prevComponentValue = $704cf1d3b684cc5c$var$componentIds.get(currentOwner);
-            if (prevComponentValue == null) $704cf1d3b684cc5c$var$componentIds.set(currentOwner, {
+            let prevComponentValue = $b5e257d569688ac6$var$componentIds.get(currentOwner);
+            if (prevComponentValue == null) $b5e257d569688ac6$var$componentIds.set(currentOwner, {
                 id: ctx.current,
                 state: currentOwner.memoizedState
             });
@@ -35914,7 +35935,7 @@ function $704cf1d3b684cc5c$var$useCounter(isDisabled = false) {
                 // Reset the counter, and remove from the weak map so we don't
                 // do this for subsequent useId calls.
                 ctx.current = prevComponentValue.id;
-                $704cf1d3b684cc5c$var$componentIds.delete(currentOwner);
+                $b5e257d569688ac6$var$componentIds.delete(currentOwner);
             }
         }
         // eslint-disable-next-line rulesdir/pure-render
@@ -35923,38 +35944,39 @@ function $704cf1d3b684cc5c$var$useCounter(isDisabled = false) {
     // eslint-disable-next-line rulesdir/pure-render
     return ref.current;
 }
-function $704cf1d3b684cc5c$var$useLegacySSRSafeId(defaultId) {
-    let ctx = (0, _react.useContext)($704cf1d3b684cc5c$var$SSRContext);
+function $b5e257d569688ac6$var$useLegacySSRSafeId(defaultId) {
+    let ctx = (0, _react.useContext)($b5e257d569688ac6$var$SSRContext);
     // If we are rendering in a non-DOM environment, and there's no SSRProvider,
     // provide a warning to hint to the developer to add one.
-    if (ctx === $704cf1d3b684cc5c$var$defaultContext && !$704cf1d3b684cc5c$var$canUseDOM) console.warn("When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.");
-    let counter = $704cf1d3b684cc5c$var$useCounter(!!defaultId);
-    return defaultId || `react-aria${ctx.prefix}-${counter}`;
+    if (ctx === $b5e257d569688ac6$var$defaultContext && !$b5e257d569688ac6$var$canUseDOM) console.warn("When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.");
+    let counter = $b5e257d569688ac6$var$useCounter(!!defaultId);
+    let prefix = `react-aria${ctx.prefix}`;
+    return defaultId || `${prefix}-${counter}`;
 }
-function $704cf1d3b684cc5c$var$useModernSSRSafeId(defaultId) {
+function $b5e257d569688ac6$var$useModernSSRSafeId(defaultId) {
     // @ts-ignore
     let id = (0, _reactDefault.default).useId();
-    let [didSSR] = (0, _react.useState)($704cf1d3b684cc5c$export$535bd6ca7f90a273());
-    let prefix = didSSR ? "react-aria" : `react-aria${$704cf1d3b684cc5c$var$defaultContext.prefix}`;
+    let [didSSR] = (0, _react.useState)($b5e257d569688ac6$export$535bd6ca7f90a273());
+    let prefix = didSSR || false ? "react-aria" : `react-aria${$b5e257d569688ac6$var$defaultContext.prefix}`;
     return defaultId || `${prefix}-${id}`;
 }
-const $704cf1d3b684cc5c$export$619500959fc48b26 = typeof (0, _reactDefault.default)["useId"] === "function" ? $704cf1d3b684cc5c$var$useModernSSRSafeId : $704cf1d3b684cc5c$var$useLegacySSRSafeId;
-function $704cf1d3b684cc5c$var$getSnapshot() {
+const $b5e257d569688ac6$export$619500959fc48b26 = typeof (0, _reactDefault.default)["useId"] === "function" ? $b5e257d569688ac6$var$useModernSSRSafeId : $b5e257d569688ac6$var$useLegacySSRSafeId;
+function $b5e257d569688ac6$var$getSnapshot() {
     return false;
 }
-function $704cf1d3b684cc5c$var$getServerSnapshot() {
+function $b5e257d569688ac6$var$getServerSnapshot() {
     return true;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function $704cf1d3b684cc5c$var$subscribe(onStoreChange) {
+function $b5e257d569688ac6$var$subscribe(onStoreChange) {
     // noop
     return ()=>{};
 }
-function $704cf1d3b684cc5c$export$535bd6ca7f90a273() {
+function $b5e257d569688ac6$export$535bd6ca7f90a273() {
     // In React 18, we can use useSyncExternalStore to detect if we're server rendering or hydrating.
-    if (typeof (0, _reactDefault.default)["useSyncExternalStore"] === "function") return (0, _reactDefault.default)["useSyncExternalStore"]($704cf1d3b684cc5c$var$subscribe, $704cf1d3b684cc5c$var$getSnapshot, $704cf1d3b684cc5c$var$getServerSnapshot);
+    if (typeof (0, _reactDefault.default)["useSyncExternalStore"] === "function") return (0, _reactDefault.default)["useSyncExternalStore"]($b5e257d569688ac6$var$subscribe, $b5e257d569688ac6$var$getSnapshot, $b5e257d569688ac6$var$getServerSnapshot);
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    let cur = (0, _react.useContext)($704cf1d3b684cc5c$var$SSRContext);
+    let cur = (0, _react.useContext)($b5e257d569688ac6$var$SSRContext);
     return cur.isSSR;
 }
 
@@ -38863,25 +38885,25 @@ var _useMediaQuery = require("./useMediaQuery");
 var _useMediaQueryDefault = parcelHelpers.interopDefault(_useMediaQuery);
 var _react = require("react");
 function createBreakpointHook(breakpointValues) {
-    var names = Object.keys(breakpointValues);
+    const names = Object.keys(breakpointValues);
     function and(query, next) {
         if (query === next) return next;
-        return query ? query + " and " + next : next;
+        return query ? `${query} and ${next}` : next;
     }
     function getNext(breakpoint) {
         return names[Math.min(names.indexOf(breakpoint) + 1, names.length - 1)];
     }
     function getMaxQuery(breakpoint) {
-        var next = getNext(breakpoint);
-        var value = breakpointValues[next];
-        if (typeof value === "number") value = value - 0.2 + "px";
-        else value = "calc(" + value + " - 0.2px)";
-        return "(max-width: " + value + ")";
+        const next = getNext(breakpoint);
+        let value = breakpointValues[next];
+        if (typeof value === "number") value = `${value - 0.2}px`;
+        else value = `calc(${value} - 0.2px)`;
+        return `(max-width: ${value})`;
     }
     function getMinQuery(breakpoint) {
-        var value = breakpointValues[breakpoint];
-        if (typeof value === "number") value = value + "px";
-        return "(min-width: " + value + ")";
+        let value = breakpointValues[breakpoint];
+        if (typeof value === "number") value = `${value}px`;
+        return `(min-width: ${value})`;
     }
     /**
    * Match a set of breakpoints
@@ -38897,32 +38919,45 @@ function createBreakpointHook(breakpointValues) {
    * @param breakpointMap An object map of breakpoints and directions, queries are constructed using "and" to join
    * breakpoints together
    * @param window Optionally specify the target window to match against (useful when rendering into iframes)
+   */ /**
+   * Match a single breakpoint exactly, up, or down.
+   *
+   * ```tsx
+   * const PhoneOnly = () => {
+   *   const isSmall = useBreakpoint('sm', 'down');
+   *
+   *   if (isSmall) return <div>On a Small Screen!</div>
+   *   return null;
+   * }
+   * ```
+   *
+   * @param breakpoint The breakpoint key
+   * @param direction A direction 'up' for a max, 'down' for min, true to match only the breakpoint
+   * @param window Optionally specify the target window to match against (useful when rendering into iframes)
    */ function useBreakpoint(breakpointOrMap, direction, window) {
-        var breakpointMap;
+        let breakpointMap;
         if (typeof breakpointOrMap === "object") {
             breakpointMap = breakpointOrMap;
             window = direction;
             direction = true;
         } else {
-            var _breakpointMap;
             direction = direction || true;
-            breakpointMap = (_breakpointMap = {}, _breakpointMap[breakpointOrMap] = direction, _breakpointMap);
+            breakpointMap = {
+                [breakpointOrMap]: direction
+            };
         }
-        var query = (0, _react.useMemo)(function() {
-            return Object.entries(breakpointMap).reduce(function(query, _ref) {
-                var key = _ref[0], direction = _ref[1];
+        let query = (0, _react.useMemo)(()=>Object.entries(breakpointMap).reduce((query, [key, direction])=>{
                 if (direction === "up" || direction === true) query = and(query, getMinQuery(key));
                 if (direction === "down" || direction === true) query = and(query, getMaxQuery(key));
                 return query;
-            }, "");
-        }, [
+            }, ""), [
             JSON.stringify(breakpointMap)
         ]);
         return (0, _useMediaQueryDefault.default)(query, window);
     }
     return useBreakpoint;
 }
-var useBreakpoint = createBreakpointHook({
+const useBreakpoint = createBreakpointHook({
     xs: 0,
     sm: 576,
     md: 768,
@@ -38939,12 +38974,12 @@ parcelHelpers.export(exports, "default", ()=>useMediaQuery);
 var _useIsomorphicEffect = require("./useIsomorphicEffect");
 var _useIsomorphicEffectDefault = parcelHelpers.interopDefault(_useIsomorphicEffect);
 var _react = require("react");
-var matchersByWindow = new WeakMap();
-var getMatcher = function getMatcher(query, targetWindow) {
+const matchersByWindow = new WeakMap();
+const getMatcher = (query, targetWindow)=>{
     if (!query || !targetWindow) return undefined;
-    var matchers = matchersByWindow.get(targetWindow) || new Map();
+    const matchers = matchersByWindow.get(targetWindow) || new Map();
     matchersByWindow.set(targetWindow, matchers);
-    var mql = matchers.get(query);
+    let mql = matchers.get(query);
     if (!mql) {
         mql = targetWindow.matchMedia(query);
         mql.refCount = 0;
@@ -38952,23 +38987,20 @@ var getMatcher = function getMatcher(query, targetWindow) {
     }
     return mql;
 };
-function useMediaQuery(query, targetWindow) {
-    if (targetWindow === void 0) targetWindow = typeof window === "undefined" ? undefined : window;
-    var mql = getMatcher(query, targetWindow);
-    var _useState = (0, _react.useState)(function() {
-        return mql ? mql.matches : false;
-    }), matches = _useState[0], setMatches = _useState[1];
-    (0, _useIsomorphicEffectDefault.default)(function() {
-        var mql = getMatcher(query, targetWindow);
+function useMediaQuery(query, targetWindow = typeof window === "undefined" ? undefined : window) {
+    const mql = getMatcher(query, targetWindow);
+    const [matches, setMatches] = (0, _react.useState)(()=>mql ? mql.matches : false);
+    (0, _useIsomorphicEffectDefault.default)(()=>{
+        let mql = getMatcher(query, targetWindow);
         if (!mql) return setMatches(false);
-        var matchers = matchersByWindow.get(targetWindow);
-        var handleChange = function handleChange() {
+        let matchers = matchersByWindow.get(targetWindow);
+        const handleChange = ()=>{
             setMatches(mql.matches);
         };
         mql.refCount++;
         mql.addListener(handleChange);
         handleChange();
-        return function() {
+        return ()=>{
             mql.removeListener(handleChange);
             mql.refCount--;
             if (mql.refCount <= 0) matchers == null || matchers.delete(mql.media);
@@ -40873,7 +40905,7 @@ exports.default = Object.assign(ToggleButtonGroup, {
 
 },{"react":"21dqq","invariant":"d1QgR","uncontrollable":"b3yWY","./createChainedFunction":"1KNLM","./ElementChildren":"fdyAp","./ButtonGroup":"gXYCe","./ToggleButton":"dCmeV","react/jsx-runtime":"6AEwr","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9xmpe":[function(require,module,exports) {
 /**
- * React Router DOM v6.14.0
+ * React Router DOM v6.15.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -40911,6 +40943,7 @@ parcelHelpers.export(exports, "matchPath", ()=>(0, _reactRouter.matchPath));
 parcelHelpers.export(exports, "matchRoutes", ()=>(0, _reactRouter.matchRoutes));
 parcelHelpers.export(exports, "parsePath", ()=>(0, _reactRouter.parsePath));
 parcelHelpers.export(exports, "redirect", ()=>(0, _reactRouter.redirect));
+parcelHelpers.export(exports, "redirectDocument", ()=>(0, _reactRouter.redirectDocument));
 parcelHelpers.export(exports, "renderMatches", ()=>(0, _reactRouter.renderMatches));
 parcelHelpers.export(exports, "resolvePath", ()=>(0, _reactRouter.resolvePath));
 parcelHelpers.export(exports, "unstable_useBlocker", ()=>(0, _reactRouter.unstable_useBlocker));
@@ -41039,11 +41072,16 @@ function shouldProcessLinkClick(event, target) {
 }
 function getSearchParamsForLocation(locationSearch, defaultSearchParams) {
     let searchParams = createSearchParams(locationSearch);
-    if (defaultSearchParams) {
-        for (let key of defaultSearchParams.keys())if (!searchParams.has(key)) defaultSearchParams.getAll(key).forEach((value)=>{
+    if (defaultSearchParams) // Use `defaultSearchParams.forEach(...)` here instead of iterating of
+    // `defaultSearchParams.keys()` to work-around a bug in Firefox related to
+    // web extensions. Relevant Bugzilla tickets:
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1414602
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1023984
+    defaultSearchParams.forEach((_, key)=>{
+        if (!searchParams.has(key)) defaultSearchParams.getAll(key).forEach((value)=>{
             searchParams.append(key, value);
         });
-    }
+    });
     return searchParams;
 }
 // One-time check for submitter support
@@ -41150,6 +41188,7 @@ const _excluded = [
 ], _excluded3 = [
     "reloadDocument",
     "replace",
+    "state",
     "method",
     "action",
     "onSubmit",
@@ -41202,11 +41241,27 @@ function deserializeErrors(errors) {
         // serializeErrors in react-router-dom/server.tsx :)
         if (val && val.__type === "RouteErrorResponse") serialized[key] = new (0, _router.ErrorResponse)(val.status, val.statusText, val.data, val.internal === true);
         else if (val && val.__type === "Error") {
-            let error = new Error(val.message);
-            // Wipe away the client-side stack trace.  Nothing to fill it in with
-            // because we don't serialize SSR stack traces for security reasons
-            error.stack = "";
-            serialized[key] = error;
+            // Attempt to reconstruct the right type of Error (i.e., ReferenceError)
+            if (val.__subType) {
+                let ErrorConstructor = window[val.__subType];
+                if (typeof ErrorConstructor === "function") try {
+                    // @ts-expect-error
+                    let error = new ErrorConstructor(val.message);
+                    // Wipe away the client-side stack trace.  Nothing to fill it in with
+                    // because we don't serialize SSR stack traces for security reasons
+                    error.stack = "";
+                    serialized[key] = error;
+                } catch (e) {
+                // no-op - fall through and create a normal Error
+                }
+            }
+            if (serialized[key] == null) {
+                let error = new Error(val.message);
+                // Wipe away the client-side stack trace.  Nothing to fill it in with
+                // because we don't serialize SSR stack traces for security reasons
+                error.stack = "";
+                serialized[key] = error;
+            }
         } else serialized[key] = val;
     }
     return serialized;
@@ -41450,7 +41505,7 @@ NavLink.displayName = "NavLink";
 });
 Form.displayName = "Form";
 const FormImpl = /*#__PURE__*/ _react.forwardRef((_ref6, forwardedRef)=>{
-    let { reloadDocument, replace, method = defaultMethod, action, onSubmit, submit, relative, preventScrollReset } = _ref6, props = _objectWithoutPropertiesLoose(_ref6, _excluded3);
+    let { reloadDocument, replace, state, method = defaultMethod, action, onSubmit, submit, relative, preventScrollReset } = _ref6, props = _objectWithoutPropertiesLoose(_ref6, _excluded3);
     let formMethod = method.toLowerCase() === "get" ? "get" : "post";
     let formAction = useFormAction(action, {
         relative
@@ -41464,6 +41519,7 @@ const FormImpl = /*#__PURE__*/ _react.forwardRef((_ref6, forwardedRef)=>{
         submit(submitter || event.currentTarget, {
             method: submitMethod,
             replace,
+            state,
             relative,
             preventScrollReset
         });
@@ -41602,6 +41658,7 @@ function validateClientSideSubmission() {
             formMethod: options.method || method,
             formEncType: options.encType || encType,
             replace: options.replace,
+            state: options.state,
             fromRouteId: currentRouteId
         });
     }, [
@@ -41648,17 +41705,15 @@ function useFormAction(action, _temp2) {
         relative
     }));
     // Previously we set the default action to ".". The problem with this is that
-    // `useResolvedPath(".")` excludes search params and the hash of the resolved
-    // URL. This is the intended behavior of when "." is specifically provided as
+    // `useResolvedPath(".")` excludes search params of the resolved URL. This is
+    // the intended behavior of when "." is specifically provided as
     // the form action, but inconsistent w/ browsers when the action is omitted.
     // https://github.com/remix-run/remix/issues/927
     let location = (0, _reactRouter.useLocation)();
     if (action == null) {
-        // Safe to write to these directly here since if action was undefined, we
+        // Safe to write to this directly here since if action was undefined, we
         // would have called useResolvedPath(".") which will never include a search
-        // or hash
         path.search = location.search;
-        path.hash = location.hash;
         // When grabbing search params from the URL, remove the automatically
         // inserted ?index param so we match the useResolvedPath search behavior
         // which would not include ?index
@@ -41821,7 +41876,7 @@ let savedScrollPositions = {};
             }
             // try to scroll to the hash
             if (location.hash) {
-                let el = document.getElementById(location.hash.slice(1));
+                let el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
                 if (el) {
                     el.scrollIntoView();
                     return;
@@ -41893,26 +41948,29 @@ let savedScrollPositions = {};
     let { when, message } = _ref8;
     let blocker = (0, _reactRouter.unstable_useBlocker)(when);
     _react.useEffect(()=>{
-        if (blocker.state === "blocked" && !when) blocker.reset();
-    }, [
-        blocker,
-        when
-    ]);
-    _react.useEffect(()=>{
         if (blocker.state === "blocked") {
             let proceed = window.confirm(message);
-            if (proceed) setTimeout(blocker.proceed, 0);
+            if (proceed) // This timeout is needed to avoid a weird "race" on POP navigations
+            // between the `window.history` revert navigation and the result of
+            // `window.confirm`
+            setTimeout(blocker.proceed, 0);
             else blocker.reset();
         }
     }, [
         blocker,
         message
     ]);
+    _react.useEffect(()=>{
+        if (blocker.state === "blocked" && !when) blocker.reset();
+    }, [
+        blocker,
+        when
+    ]);
 }
 
 },{"react":"21dqq","react-router":"dbWyW","@remix-run/router":"5ncDG","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dbWyW":[function(require,module,exports) {
 /**
- * React Router v6.14.0
+ * React Router v6.15.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -41933,6 +41991,7 @@ parcelHelpers.export(exports, "matchPath", ()=>(0, _router.matchPath));
 parcelHelpers.export(exports, "matchRoutes", ()=>(0, _router.matchRoutes));
 parcelHelpers.export(exports, "parsePath", ()=>(0, _router.parsePath));
 parcelHelpers.export(exports, "redirect", ()=>(0, _router.redirect));
+parcelHelpers.export(exports, "redirectDocument", ()=>(0, _router.redirectDocument));
 parcelHelpers.export(exports, "resolvePath", ()=>(0, _router.resolvePath));
 parcelHelpers.export(exports, "Await", ()=>Await);
 parcelHelpers.export(exports, "MemoryRouter", ()=>MemoryRouter);
@@ -42441,14 +42500,13 @@ function _renderMatches(matches, parentMatches, dataRouterState) {
         }) : getChildren();
     }, null);
 }
-var DataRouterHook;
-(function(DataRouterHook) {
+var DataRouterHook = /*#__PURE__*/ function(DataRouterHook) {
     DataRouterHook["UseBlocker"] = "useBlocker";
     DataRouterHook["UseRevalidator"] = "useRevalidator";
     DataRouterHook["UseNavigateStable"] = "useNavigate";
-})(DataRouterHook || (DataRouterHook = {}));
-var DataRouterStateHook;
-(function(DataRouterStateHook) {
+    return DataRouterHook;
+}(DataRouterHook || {});
+var DataRouterStateHook = /*#__PURE__*/ function(DataRouterStateHook) {
     DataRouterStateHook["UseBlocker"] = "useBlocker";
     DataRouterStateHook["UseLoaderData"] = "useLoaderData";
     DataRouterStateHook["UseActionData"] = "useActionData";
@@ -42459,7 +42517,8 @@ var DataRouterStateHook;
     DataRouterStateHook["UseRevalidator"] = "useRevalidator";
     DataRouterStateHook["UseNavigateStable"] = "useNavigate";
     DataRouterStateHook["UseRouteId"] = "useRouteId";
-})(DataRouterStateHook || (DataRouterStateHook = {}));
+    return DataRouterStateHook;
+}(DataRouterStateHook || {});
 function getDataRouterConsoleError(hookName) {
     return hookName + " must be used within a data router.  See https://reactrouter.com/routers/picking-a-router.";
 }
@@ -42503,10 +42562,13 @@ function useCurrentRouteId(hookName) {
  */ function useRevalidator() {
     let dataRouterContext = useDataRouterContext(DataRouterHook.UseRevalidator);
     let state = useDataRouterState(DataRouterStateHook.UseRevalidator);
-    return {
-        revalidate: dataRouterContext.router.revalidate,
-        state: state.revalidation
-    };
+    return _react.useMemo(()=>({
+            revalidate: dataRouterContext.router.revalidate,
+            state: state.revalidation
+        }), [
+        dataRouterContext.router.revalidate,
+        state.revalidation
+    ]);
 }
 /**
  * Returns the active route matches, useful for accessing loaderData for
@@ -42592,7 +42654,6 @@ let blockerId = 0;
     let { router, basename } = useDataRouterContext(DataRouterHook.UseBlocker);
     let state = useDataRouterState(DataRouterStateHook.UseBlocker);
     let [blockerKey, setBlockerKey] = _react.useState("");
-    let [blocker, setBlocker] = _react.useState((0, _router.IDLE_BLOCKER));
     let blockerFunction = _react.useCallback((arg)=>{
         if (typeof shouldBlock !== "function") return !!shouldBlock;
         if (basename === "/") return shouldBlock(arg);
@@ -42613,20 +42674,29 @@ let blockerId = 0;
         basename,
         shouldBlock
     ]);
+    // This effect is in charge of blocker key assignment and deletion (which is
+    // tightly coupled to the key)
     _react.useEffect(()=>{
         let key = String(++blockerId);
-        setBlocker(router.getBlocker(key, blockerFunction));
         setBlockerKey(key);
         return ()=>router.deleteBlocker(key);
     }, [
+        router
+    ]);
+    // This effect handles assigning the blockerFunction.  This is to handle
+    // unstable blocker function identities, and happens only after the prior
+    // effect so we don't get an orphaned blockerFunction in the router with a
+    // key of "".  Until then we just have the IDLE_BLOCKER.
+    _react.useEffect(()=>{
+        if (blockerKey !== "") router.getBlocker(blockerKey, blockerFunction);
+    }, [
         router,
-        setBlocker,
-        setBlockerKey,
+        blockerKey,
         blockerFunction
     ]);
-    // Prefer the blocker from state since DataRouterContext is memoized so this
-    // ensures we update on blocker state updates
-    return blockerKey && state.blockers.has(blockerKey) ? state.blockers.get(blockerKey) : blocker;
+    // Prefer the blocker from `state` not `router.state` since DataRouterContext
+    // is memoized so this ensures we update on blocker state updates
+    return blockerKey && state.blockers.has(blockerKey) ? state.blockers.get(blockerKey) : (0, _router.IDLE_BLOCKER);
 }
 /**
  * Stable version of useNavigate that is used when we are in the context of
@@ -42912,12 +42982,12 @@ function DataRoutes(_ref2) {
         errorElement: errorElement
     }, /*#__PURE__*/ _react.createElement(ResolveAwait, null, children));
 }
-var AwaitRenderStatus;
-(function(AwaitRenderStatus) {
+var AwaitRenderStatus = /*#__PURE__*/ function(AwaitRenderStatus) {
     AwaitRenderStatus[AwaitRenderStatus["pending"] = 0] = "pending";
     AwaitRenderStatus[AwaitRenderStatus["success"] = 1] = "success";
     AwaitRenderStatus[AwaitRenderStatus["error"] = 2] = "error";
-})(AwaitRenderStatus || (AwaitRenderStatus = {}));
+    return AwaitRenderStatus;
+}(AwaitRenderStatus || {});
 const neverSettledPromise = new Promise(()=>{});
 class AwaitErrorBoundary extends _react.Component {
     constructor(props){
@@ -43095,7 +43165,7 @@ function createMemoryRouter(routes, opts) {
 
 },{"react":"21dqq","@remix-run/router":"5ncDG","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5ncDG":[function(require,module,exports) {
 /**
- * @remix-run/router v1.7.0
+ * @remix-run/router v1.8.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -43137,6 +43207,7 @@ parcelHelpers.export(exports, "matchRoutes", ()=>matchRoutes);
 parcelHelpers.export(exports, "normalizePathname", ()=>normalizePathname);
 parcelHelpers.export(exports, "parsePath", ()=>parsePath);
 parcelHelpers.export(exports, "redirect", ()=>redirect);
+parcelHelpers.export(exports, "redirectDocument", ()=>redirectDocument);
 parcelHelpers.export(exports, "resolvePath", ()=>resolvePath);
 parcelHelpers.export(exports, "resolveTo", ()=>resolveTo);
 parcelHelpers.export(exports, "stripBasename", ()=>stripBasename);
@@ -43299,6 +43370,13 @@ const PopStateEventType = "popstate";
     if (options === void 0) options = {};
     function createHashLocation(window1, globalHistory) {
         let { pathname = "/", search = "", hash = "" } = parsePath(window1.location.hash.substr(1));
+        // Hash URL should always have a leading / just like window.location.pathname
+        // does, so if an app ends up at a route like /#something then we add a
+        // leading slash so all of our path-matching behaves the same as if it would
+        // in a browser router.  This is particularly important when there exists a
+        // root splat route (<Route path="*">) since that matches internally against
+        // "/*" and we'd expect /#something to 404 in a hash router app.
+        if (!pathname.startsWith("/") && !pathname.startsWith(".")) pathname = "/" + pathname;
         return createLocation("", {
             pathname,
             search,
@@ -44043,7 +44121,7 @@ class DeferredData {
         let promise = Promise.race([
             value,
             this.abortPromise
-        ]).then((data)=>this.onSettle(promise, key, null, data), (error)=>this.onSettle(promise, key, error));
+        ]).then((data)=>this.onSettle(promise, key, undefined, data), (error)=>this.onSettle(promise, key, error));
         // Register rejection listeners to avoid uncaught promise rejections on
         // errors or aborted deferred values
         promise.catch(()=>{});
@@ -44063,7 +44141,17 @@ class DeferredData {
         this.pendingKeysSet.delete(key);
         if (this.done) // Nothing left to abort!
         this.unlistenAbortSignal();
-        if (error) {
+        // If the promise was resolved/rejected with undefined, we'll throw an error as you
+        // should always resolve with a value or null
+        if (error === undefined && data === undefined) {
+            let undefinedError = new Error('Deferred data for key "' + key + '" resolved/rejected with `undefined`, ' + "you must resolve/reject with a value or `null`.");
+            Object.defineProperty(promise, "_error", {
+                get: ()=>undefinedError
+            });
+            this.emit(false, key);
+            return Promise.reject(undefinedError);
+        }
+        if (data === undefined) {
             Object.defineProperty(promise, "_error", {
                 get: ()=>error
             });
@@ -44148,6 +44236,15 @@ const defer = function defer(data, init) {
     return new Response(null, _extends({}, responseInit, {
         headers
     }));
+};
+/**
+ * A redirect response that will force a document reload to the new location.
+ * Sets the status code and the `Location` header.
+ * Defaults to "302 Found".
+ */ const redirectDocument = (url, init)=>{
+    let response = redirect(url, init);
+    response.headers.set("X-Remix-Reload-Document", "true");
+    return response;
 };
 /**
  * @private
@@ -44455,8 +44552,11 @@ const defaultMapRouteProperties = (route)=>({
         let loaderData = newState.loaderData ? mergeLoaderData(state.loaderData, newState.loaderData, newState.matches || [], newState.errors) : state.loaderData;
         // On a successful navigation we can assume we got through all blockers
         // so we can start fresh
-        let blockers = new Map();
-        blockerFunctions.clear();
+        let blockers = state.blockers;
+        if (blockers.size > 0) {
+            blockers = new Map(blockers);
+            blockers.forEach((_, k)=>blockers.set(k, IDLE_BLOCKER));
+        }
         // Always respect the user flag.  Otherwise don't reset on mutation
         // submission navigations unless they redirect
         let preventScrollReset = pendingPreventScrollReset === true || state.navigation.formMethod != null && isMutationMethod(state.navigation.formMethod) && ((_location$state2 = location.state) == null ? void 0 : _location$state2._isRedirect) !== true;
@@ -44752,6 +44852,7 @@ const defaultMapRouteProperties = (route)=>({
         // about to reload.  Note that if this is an action reload we would have
         // already cancelled all pending deferreds so this would be a no-op
         cancelActiveDeferreds((routeId)=>!(matches && matches.some((m)=>m.route.id === routeId)) || matchesToLoad && matchesToLoad.some((m)=>m.route.id === routeId));
+        pendingNavigationLoadId = ++incrementingLoadId;
         // Short circuit if we have no loaders to run
         if (matchesToLoad.length === 0 && revalidatingFetchers.length === 0) {
             let updatedFetchers = markFetchRedirectsDone();
@@ -44790,7 +44891,6 @@ const defaultMapRouteProperties = (route)=>({
                 fetchers: new Map(state.fetchers)
             } : {}));
         }
-        pendingNavigationLoadId = ++incrementingLoadId;
         revalidatingFetchers.forEach((rf)=>{
             if (fetchControllers.has(rf.key)) abortFetcher(rf.key);
             if (rf.controller) // Fetchers use an independent AbortController so that aborting a fetcher
@@ -44813,7 +44913,14 @@ const defaultMapRouteProperties = (route)=>({
         // If any loaders returned a redirect Response, start a new REPLACE navigation
         let redirect = findRedirect(results);
         if (redirect) {
-            await startRedirectNavigation(state, redirect, {
+            if (redirect.idx >= matchesToLoad.length) {
+                // If this redirect came from a fetcher make sure we mark it in
+                // fetchRedirectIds so it doesn't get revalidated on the next set of
+                // loader executions
+                let fetcherKey = revalidatingFetchers[redirect.idx - matchesToLoad.length].key;
+                fetchRedirectIds.add(fetcherKey);
+            }
+            await startRedirectNavigation(state, redirect.result, {
                 replace
             });
             return {
@@ -44901,6 +45008,7 @@ const defaultMapRouteProperties = (route)=>({
         let abortController = new AbortController();
         let fetchRequest = createClientSideRequest(init.history, path, abortController.signal, submission);
         fetchControllers.set(key, abortController);
+        let originatingLoadId = incrementingLoadId;
         let actionResult = await callLoaderOrAction("action", fetchRequest, match, requestMatches, manifest, mapRouteProperties, basename);
         if (fetchRequest.signal.aborted) {
             // We can delete this so long as we weren't aborted by ou our own fetcher
@@ -44910,16 +45018,29 @@ const defaultMapRouteProperties = (route)=>({
         }
         if (isRedirectResult(actionResult)) {
             fetchControllers.delete(key);
-            fetchRedirectIds.add(key);
-            let loadingFetcher = getLoadingFetcher(submission);
-            state.fetchers.set(key, loadingFetcher);
-            updateState({
-                fetchers: new Map(state.fetchers)
-            });
-            return startRedirectNavigation(state, actionResult, {
-                submission,
-                isFetchActionRedirect: true
-            });
+            if (pendingNavigationLoadId > originatingLoadId) {
+                // A new navigation was kicked off after our action started, so that
+                // should take precedence over this redirect navigation.  We already
+                // set isRevalidationRequired so all loaders for the new route should
+                // fire unless opted out via shouldRevalidate
+                let doneFetcher = getDoneFetcher(undefined);
+                state.fetchers.set(key, doneFetcher);
+                updateState({
+                    fetchers: new Map(state.fetchers)
+                });
+                return;
+            } else {
+                fetchRedirectIds.add(key);
+                let loadingFetcher = getLoadingFetcher(submission);
+                state.fetchers.set(key, loadingFetcher);
+                updateState({
+                    fetchers: new Map(state.fetchers)
+                });
+                return startRedirectNavigation(state, actionResult, {
+                    submission,
+                    isFetchActionRedirect: true
+                });
+            }
         }
         // Process any non-redirect errors thrown
         if (isErrorResult(actionResult)) {
@@ -44967,7 +45088,16 @@ const defaultMapRouteProperties = (route)=>({
         fetchControllers.delete(key);
         revalidatingFetchers.forEach((r)=>fetchControllers.delete(r.key));
         let redirect = findRedirect(results);
-        if (redirect) return startRedirectNavigation(state, redirect);
+        if (redirect) {
+            if (redirect.idx >= matchesToLoad.length) {
+                // If this redirect came from a fetcher make sure we mark it in
+                // fetchRedirectIds so it doesn't get revalidated on the next set of
+                // loader executions
+                let fetcherKey = revalidatingFetchers[redirect.idx - matchesToLoad.length].key;
+                fetchRedirectIds.add(fetcherKey);
+            }
+            return startRedirectNavigation(state, redirect.result);
+        }
         // Process and commit output from loaders
         let { loaderData, errors } = processLoaderData(state, state.matches, matchesToLoad, loaderResults, undefined, revalidatingFetchers, fetcherResults, activeDeferreds);
         // Since we let revalidations complete even if the submitting fetcher was
@@ -45015,6 +45145,7 @@ const defaultMapRouteProperties = (route)=>({
         let abortController = new AbortController();
         let fetchRequest = createClientSideRequest(init.history, path, abortController.signal);
         fetchControllers.set(key, abortController);
+        let originatingLoadId = incrementingLoadId;
         let result = await callLoaderOrAction("loader", fetchRequest, match, matches, manifest, mapRouteProperties, basename);
         // Deferred isn't supported for fetcher loads, await everything and treat it
         // as a normal load.  resolveDeferredData will return undefined if this
@@ -45027,9 +45158,20 @@ const defaultMapRouteProperties = (route)=>({
         if (fetchRequest.signal.aborted) return;
         // If the loader threw a redirect Response, start a new REPLACE navigation
         if (isRedirectResult(result)) {
-            fetchRedirectIds.add(key);
-            await startRedirectNavigation(state, result);
-            return;
+            if (pendingNavigationLoadId > originatingLoadId) {
+                // A new navigation was kicked off after our loader started, so that
+                // should take precedence over this redirect navigation
+                let doneFetcher = getDoneFetcher(undefined);
+                state.fetchers.set(key, doneFetcher);
+                updateState({
+                    fetchers: new Map(state.fetchers)
+                });
+                return;
+            } else {
+                fetchRedirectIds.add(key);
+                await startRedirectNavigation(state, result);
+                return;
+            }
         }
         // Process any non-redirect errors thrown
         if (isErrorResult(result)) {
@@ -45081,11 +45223,17 @@ const defaultMapRouteProperties = (route)=>({
             _isFetchActionRedirect: true
         } : {}));
         invariant(redirectLocation, "Expected a location on the redirect navigation");
-        // Check if this an absolute external redirect that goes to a new origin
-        if (ABSOLUTE_URL_REGEX.test(redirect.location) && isBrowser) {
-            let url = init.history.createURL(redirect.location);
-            let isDifferentBasename = stripBasename(url.pathname, basename) == null;
-            if (routerWindow.location.origin !== url.origin || isDifferentBasename) {
+        if (isBrowser) {
+            let isDocumentReload = false;
+            if (redirect.reloadDocument) // Hard reload if the response contained X-Remix-Reload-Document
+            isDocumentReload = true;
+            else if (ABSOLUTE_URL_REGEX.test(redirect.location)) {
+                const url = init.history.createURL(redirect.location);
+                isDocumentReload = // Hard reload if it's an absolute URL to a new origin
+                url.origin !== routerWindow.location.origin || // Hard reload if it's an absolute URL that does not match our basename
+                stripBasename(url.pathname, basename) == null;
+            }
+            if (isDocumentReload) {
                 if (replace) routerWindow.location.replace(redirect.location);
                 else routerWindow.location.assign(redirect.location);
                 return;
@@ -45538,7 +45686,7 @@ function createStaticHandler(routes, opts) {
             // it to bail out and then return or throw here based on whether the user
             // returned or threw
             if (isQueryRouteResponse(e)) {
-                if (e.type === ResultType.error && !isRedirectResponse(e.response)) throw e.response;
+                if (e.type === ResultType.error) throw e.response;
                 return e.response;
             }
             // Redirects are always returned since they don't propagate to catch
@@ -45918,7 +46066,9 @@ function getMatchesToLoad(history, state, matches, submission, location, isReval
         if (!matches.some((m)=>m.route.id === f.routeId)) return;
         let fetcherMatches = matchRoutes(routesToUse, f.path, basename);
         // If the fetcher path no longer matches, push it in with null matches so
-        // we can trigger a 404 in callLoadersAndMaybeResolveData
+        // we can trigger a 404 in callLoadersAndMaybeResolveData.  Note this is
+        // currently only a use-case for Remix HMR where the route tree can change
+        // at runtime and remove a route previously loaded via a fetcher
         if (!fetcherMatches) {
             revalidatingFetchers.push({
                 key,
@@ -45931,21 +46081,22 @@ function getMatchesToLoad(history, state, matches, submission, location, isReval
             return;
         }
         // Revalidating fetchers are decoupled from the route matches since they
-        // load from a static href.  They only set `defaultShouldRevalidate` on
-        // explicit revalidation due to submission, useRevalidator, or X-Remix-Revalidate
-        //
-        // They automatically revalidate without even calling shouldRevalidate if:
-        // - They were cancelled
-        // - They're in the middle of their first load and therefore this is still
-        //   an initial load and not a revalidation
-        //
-        // If neither of those is true, then they _always_ check shouldRevalidate
+        // load from a static href.  They revalidate based on explicit revalidation
+        // (submission, useRevalidator, or X-Remix-Revalidate)
         let fetcher = state.fetchers.get(key);
-        let isPerformingInitialLoad = fetcher && fetcher.state !== "idle" && fetcher.data === undefined && // If a fetcher.load redirected then it'll be "loading" without any data
-        // so ensure we're not processing the redirect from this fetcher
-        !fetchRedirectIds.has(key);
         let fetcherMatch = getTargetMatch(fetcherMatches, f.path);
-        let shouldRevalidate = cancelledFetcherLoads.includes(key) || isPerformingInitialLoad || shouldRevalidateLoader(fetcherMatch, _extends({
+        let shouldRevalidate = false;
+        if (fetchRedirectIds.has(key)) // Never trigger a revalidation of an actively redirecting fetcher
+        shouldRevalidate = false;
+        else if (cancelledFetcherLoads.includes(key)) // Always revalidate if the fetcher was cancelled
+        shouldRevalidate = true;
+        else if (fetcher && fetcher.state !== "idle" && fetcher.data === undefined) // If the fetcher hasn't ever completed loading yet, then this isn't a
+        // revalidation, it would just be a brand new load if an explicit
+        // revalidation is required
+        shouldRevalidate = isRevalidationRequired;
+        else // Otherwise fall back on any user-defined shouldRevalidate, defaulting
+        // to explicit revalidations only
+        shouldRevalidate = shouldRevalidateLoader(fetcherMatch, _extends({
             currentUrl,
             currentParams: state.matches[state.matches.length - 1].params,
             nextUrl,
@@ -46128,17 +46279,20 @@ async function callLoaderOrAction(type, request, match, matches, manifest, mapRo
                 type: ResultType.redirect,
                 status,
                 location,
-                revalidate: result.headers.get("X-Remix-Revalidate") !== null
+                revalidate: result.headers.get("X-Remix-Revalidate") !== null,
+                reloadDocument: result.headers.get("X-Remix-Reload-Document") !== null
             };
         }
         // For SSR single-route requests, we want to hand Responses back directly
         // without unwrapping.  We do this with the QueryRouteResponse wrapper
         // interface so we can know whether it was returned or thrown
-        if (opts.isRouteRequest) // eslint-disable-next-line no-throw-literal
-        throw {
-            type: resultType || ResultType.data,
-            response: result
-        };
+        if (opts.isRouteRequest) {
+            let queryRouteResponse = {
+                type: resultType === ResultType.error ? ResultType.error : ResultType.data,
+                response: result
+            };
+            throw queryRouteResponse;
+        }
         let data;
         let contentType = result.headers.get("Content-Type");
         // Check between word boundaries instead of startsWith() due to the last
@@ -46370,7 +46524,10 @@ function getInternalRouterError(status, _temp4) {
 function findRedirect(results) {
     for(let i = results.length - 1; i >= 0; i--){
         let result = results[i];
-        if (isRedirectResult(result)) return result;
+        if (isRedirectResult(result)) return {
+            result,
+            idx: i
+        };
     }
 }
 function stripHashFromPath(path) {
@@ -46414,7 +46571,7 @@ function isRedirectResponse(result) {
     return status >= 300 && status <= 399 && location != null;
 }
 function isQueryRouteResponse(obj) {
-    return obj && isResponse(obj.response) && (obj.type === ResultType.data || ResultType.error);
+    return obj && isResponse(obj.response) && (obj.type === ResultType.data || obj.type === ResultType.error);
 }
 function isValidMethod(method) {
     return validRequestMethods.has(method.toLowerCase());
@@ -46777,6 +46934,10 @@ const MovieView = ({ movies, user, setUser, token })=>{
     _s();
     const { movieId } = (0, _reactRouter.useParams)();
     const [isFavorite, setIsFavorite] = (0, _react.useState)(false);
+    console.log(movies);
+    console.log(user);
+    console.log(setUser);
+    console.log(token);
     (0, _react.useEffect)(()=>{
         const isFavorited = user.FavoriteMovies.includes(movieId);
         setIsFavorite(isFavorited);
@@ -46785,7 +46946,7 @@ const MovieView = ({ movies, user, setUser, token })=>{
         user.FavoriteMovies
     ]);
     function removeFavorite() {
-        fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`, {
+        fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/movies/${movieId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -46800,8 +46961,8 @@ const MovieView = ({ movies, user, setUser, token })=>{
         });
     }
     function addToFavorite() {
-        fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/${movieId}`, {
-            method: "PUT",
+        fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}/movies/${movieId}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
@@ -46818,12 +46979,32 @@ const MovieView = ({ movies, user, setUser, token })=>{
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                        src: movie.ImagePath,
+                        width: "30%"
+                    }, void 0, false, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 74,
+                        columnNumber: 11
+                    }, undefined)
+                }, void 0, false, {
+                    fileName: "src/components/movie-view/movie-view.jsx",
+                    lineNumber: 73,
+                    columnNumber: 9
+                }, undefined)
+            }, void 0, false, {
+                fileName: "src/components/movie-view/movie-view.jsx",
+                lineNumber: 72,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 children: [
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
                         children: "Title: "
                     }, void 0, false, {
                         fileName: "src/components/movie-view/movie-view.jsx",
-                        lineNumber: 76,
+                        lineNumber: 79,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
@@ -46834,13 +47015,143 @@ const MovieView = ({ movies, user, setUser, token })=>{
                         ]
                     }, void 0, true, {
                         fileName: "src/components/movie-view/movie-view.jsx",
-                        lineNumber: 77,
+                        lineNumber: 80,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/movie-view/movie-view.jsx",
-                lineNumber: 75,
+                lineNumber: 78,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: "Director: "
+                    }, void 0, false, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 84,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: [
+                            " ",
+                            movie.Director.Name,
+                            " "
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 85,
+                        columnNumber: 9
+                    }, undefined)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/movie-view/movie-view.jsx",
+                lineNumber: 83,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: "Genre: "
+                    }, void 0, false, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 89,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: [
+                            " ",
+                            movie.Genre.Name,
+                            " "
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 90,
+                        columnNumber: 9
+                    }, undefined)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/movie-view/movie-view.jsx",
+                lineNumber: 88,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: "Director: "
+                    }, void 0, false, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 94,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: [
+                            " ",
+                            movie.Director.Name,
+                            " "
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 95,
+                        columnNumber: 9
+                    }, undefined)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/movie-view/movie-view.jsx",
+                lineNumber: 93,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: "Featured: "
+                    }, void 0, false, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 99,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: [
+                            " ",
+                            movie.Featured,
+                            " "
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 100,
+                        columnNumber: 9
+                    }, undefined)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/movie-view/movie-view.jsx",
+                lineNumber: 98,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: "Description: "
+                    }, void 0, false, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 103,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        children: [
+                            " ",
+                            movie.Description,
+                            " "
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 104,
+                        columnNumber: 9
+                    }, undefined)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/movie-view/movie-view.jsx",
+                lineNumber: 102,
                 columnNumber: 7
             }, undefined),
             isFavorite ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
@@ -46848,14 +47159,14 @@ const MovieView = ({ movies, user, setUser, token })=>{
                 children: "Remove from favourite movies"
             }, void 0, false, {
                 fileName: "src/components/movie-view/movie-view.jsx",
-                lineNumber: 101,
+                lineNumber: 107,
                 columnNumber: 9
             }, undefined) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
                 onClick: addToFavorite,
                 children: "Add to my favorite movies"
             }, void 0, false, {
                 fileName: "src/components/movie-view/movie-view.jsx",
-                lineNumber: 103,
+                lineNumber: 109,
                 columnNumber: 9
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Link), {
@@ -46864,18 +47175,18 @@ const MovieView = ({ movies, user, setUser, token })=>{
                     children: "Back"
                 }, void 0, false, {
                     fileName: "src/components/movie-view/movie-view.jsx",
-                    lineNumber: 107,
+                    lineNumber: 113,
                     columnNumber: 9
                 }, undefined)
             }, void 0, false, {
                 fileName: "src/components/movie-view/movie-view.jsx",
-                lineNumber: 106,
+                lineNumber: 112,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/movie-view/movie-view.jsx",
-        lineNumber: 68,
+        lineNumber: 71,
         columnNumber: 5
     }, undefined);
 };
@@ -47248,7 +47559,7 @@ const NavigationBar = ({ user, onLoggedOut })=>{
                                     }, void 0, false, {
                                         fileName: "src/components/navigation-bar/navigation-bar.jsx",
                                         lineNumber: 16,
-                                        columnNumber: 33
+                                        columnNumber: 17
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Nav).Link, {
                                         as: (0, _reactRouterDom.Link),
@@ -47257,7 +47568,7 @@ const NavigationBar = ({ user, onLoggedOut })=>{
                                     }, void 0, false, {
                                         fileName: "src/components/navigation-bar/navigation-bar.jsx",
                                         lineNumber: 19,
-                                        columnNumber: 33
+                                        columnNumber: 17
                                     }, undefined)
                                 ]
                             }, void 0, true),
@@ -47270,7 +47581,7 @@ const NavigationBar = ({ user, onLoggedOut })=>{
                                     }, void 0, false, {
                                         fileName: "src/components/navigation-bar/navigation-bar.jsx",
                                         lineNumber: 26,
-                                        columnNumber: 33
+                                        columnNumber: 17
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Nav).Link, {
                                         as: (0, _reactRouterDom.Link),
@@ -47279,7 +47590,7 @@ const NavigationBar = ({ user, onLoggedOut })=>{
                                     }, void 0, false, {
                                         fileName: "src/components/navigation-bar/navigation-bar.jsx",
                                         lineNumber: 29,
-                                        columnNumber: 33
+                                        columnNumber: 17
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Nav).Link, {
                                         onClick: onLoggedOut,
@@ -47287,7 +47598,7 @@ const NavigationBar = ({ user, onLoggedOut })=>{
                                     }, void 0, false, {
                                         fileName: "src/components/navigation-bar/navigation-bar.jsx",
                                         lineNumber: 32,
-                                        columnNumber: 33
+                                        columnNumber: 17
                                     }, undefined)
                                 ]
                             }, void 0, true)
@@ -47350,25 +47661,29 @@ var _reactBootstrap = require("react-bootstrap");
 var _s = $RefreshSig$();
 const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
     _s();
-    const [username, setUsername] = (0, _react.useState)(user.Username);
+    // Check if user is defined, otherwise set default values
+    const initialUsername = user ? user.username : "";
+    const initialEmail = user ? user.Email : "";
+    const initialBirthday = user ? user.BirthDate : "";
+    const [username, setUsername] = (0, _react.useState)(initialUsername);
     const [password, setPassword] = (0, _react.useState)("");
-    const [email, setEmail] = (0, _react.useState)(user.Email);
-    const [birthday, setBirthday] = (0, _react.useState)(user.BirthDate);
+    const [email, setEmail] = (0, _react.useState)(initialEmail);
+    const [birthday, setBirthday] = (0, _react.useState)(initialBirthday || ""); // Initialize with an empty string
     const [showModal, setShowModal] = (0, _react.useState)(false);
-    const favoriteMovies = movies.filter((movie)=>{
-        return user.FavoriteMovies.includes(movie.id);
-    });
+    // Conditionally filter favoriteMovies only if user and FavoriteMovies property are defined
+    const favoriteMovies = user && user.FavoriteMovies ? movies.filter((movie)=>user.FavoriteMovies.includes(movie.id)) : [];
     const handleShowModal = ()=>setShowModal(true);
     const handleCloseModal = ()=>setShowModal(false);
     const handleSubmit = (event)=>{
         event.preventDefault();
+        console.log("handleSubmit triggered");
         const data = {
             Username: username,
             Password: password,
             Email: email,
             BirthDate: birthday
         };
-        fetch(`https://young-depths-90911.herokuapp.com/users/${user.Username}`, {
+        fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}`, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
@@ -47381,10 +47696,11 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
         }).then((data)=>{
             localStorage.setItem("user", JSON.stringify(data));
             setUser(data);
+            alert("Update successful.");
         });
     };
     const handleDeleteUser = ()=>{
-        fetch(`https://young-depths-90911.herokuapp.com/users/${user.Username}`, {
+        fetch(`https://young-depths-90911.herokuapp.com/users/${user.username}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -47400,8 +47716,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                 children: "Profile"
             }, void 0, false, {
                 fileName: "src/components/profile-view/profile-view.jsx",
-                lineNumber: 69,
-                columnNumber: 9
+                lineNumber: 81,
+                columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _rowDefault.default), {
                 children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _colDefault.default), {
@@ -47409,12 +47725,12 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                             children: [
                                 "Username: ",
-                                user.Username
+                                user.username
                             ]
                         }, void 0, true, {
                             fileName: "src/components/profile-view/profile-view.jsx",
-                            lineNumber: 72,
-                            columnNumber: 17
+                            lineNumber: 84,
+                            columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                             children: [
@@ -47423,19 +47739,19 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                             ]
                         }, void 0, true, {
                             fileName: "src/components/profile-view/profile-view.jsx",
-                            lineNumber: 73,
-                            columnNumber: 17
+                            lineNumber: 85,
+                            columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/profile-view/profile-view.jsx",
-                    lineNumber: 71,
-                    columnNumber: 13
+                    lineNumber: 83,
+                    columnNumber: 9
                 }, undefined)
             }, void 0, false, {
                 fileName: "src/components/profile-view/profile-view.jsx",
-                lineNumber: 70,
-                columnNumber: 9
+                lineNumber: 82,
+                columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _rowDefault.default), {
                 children: [
@@ -47443,8 +47759,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                         children: "Update your profile information here."
                     }, void 0, false, {
                         fileName: "src/components/profile-view/profile-view.jsx",
-                        lineNumber: 77,
-                        columnNumber: 13
+                        lineNumber: 89,
+                        columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default), {
                         onSubmit: handleSubmit,
@@ -47456,8 +47772,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         children: "Username:"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 80,
-                                        columnNumber: 21
+                                        lineNumber: 92,
+                                        columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Control, {
                                         type: "text",
@@ -47467,14 +47783,14 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         minLength: "5"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 81,
-                                        columnNumber: 21
+                                        lineNumber: 93,
+                                        columnNumber: 13
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 79,
-                                columnNumber: 17
+                                lineNumber: 91,
+                                columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Group, {
                                 controlId: "formPassword",
@@ -47483,8 +47799,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         children: "Password:"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 90,
-                                        columnNumber: 21
+                                        lineNumber: 102,
+                                        columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Control, {
                                         type: "password",
@@ -47494,14 +47810,14 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         minLength: "5"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 91,
-                                        columnNumber: 21
+                                        lineNumber: 103,
+                                        columnNumber: 13
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 89,
-                                columnNumber: 17
+                                lineNumber: 101,
+                                columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Group, {
                                 controlId: "formEmail",
@@ -47510,8 +47826,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         children: "Email:"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 100,
-                                        columnNumber: 21
+                                        lineNumber: 112,
+                                        columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Control, {
                                         type: "email",
@@ -47520,14 +47836,14 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         required: true
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 101,
-                                        columnNumber: 21
+                                        lineNumber: 113,
+                                        columnNumber: 13
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 99,
-                                columnNumber: 17
+                                lineNumber: 111,
+                                columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Group, {
                                 controlId: "formBirthday",
@@ -47536,8 +47852,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         children: "Birthday:"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 109,
-                                        columnNumber: 21
+                                        lineNumber: 121,
+                                        columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Control, {
                                         type: "date",
@@ -47546,14 +47862,14 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                         required: true
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 110,
-                                        columnNumber: 21
+                                        lineNumber: 122,
+                                        columnNumber: 13
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 108,
-                                columnNumber: 17
+                                lineNumber: 120,
+                                columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
                                 variant: "primary",
@@ -47561,20 +47877,20 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                 children: "Save changes"
                             }, void 0, false, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 117,
-                                columnNumber: 17
+                                lineNumber: 129,
+                                columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/profile-view/profile-view.jsx",
-                        lineNumber: 78,
-                        columnNumber: 13
+                        lineNumber: 90,
+                        columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/profile-view/profile-view.jsx",
-                lineNumber: 76,
-                columnNumber: 9
+                lineNumber: 88,
+                columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _rowDefault.default), {
                 children: [
@@ -47582,8 +47898,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                         children: "Favorite movies:"
                     }, void 0, false, {
                         fileName: "src/components/profile-view/profile-view.jsx",
-                        lineNumber: 121,
-                        columnNumber: 13
+                        lineNumber: 135,
+                        columnNumber: 9
                     }, undefined),
                     favoriteMovies.map((movie)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _colDefault.default), {
                             className: "mb-5",
@@ -47592,19 +47908,19 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                 movie: movie
                             }, void 0, false, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 124,
-                                columnNumber: 21
+                                lineNumber: 138,
+                                columnNumber: 13
                             }, undefined)
                         }, movie.id, false, {
                             fileName: "src/components/profile-view/profile-view.jsx",
-                            lineNumber: 123,
-                            columnNumber: 17
+                            lineNumber: 137,
+                            columnNumber: 11
                         }, undefined))
                 ]
             }, void 0, true, {
                 fileName: "src/components/profile-view/profile-view.jsx",
-                lineNumber: 120,
-                columnNumber: 9
+                lineNumber: 134,
+                columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
                 variant: "primary",
@@ -47612,8 +47928,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                 children: "Delete my account"
             }, void 0, false, {
                 fileName: "src/components/profile-view/profile-view.jsx",
-                lineNumber: 128,
-                columnNumber: 9
+                lineNumber: 142,
+                columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modalDefault.default), {
                 show: showModal,
@@ -47625,20 +47941,20 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                             children: "Delete account"
                         }, void 0, false, {
                             fileName: "src/components/profile-view/profile-view.jsx",
-                            lineNumber: 133,
-                            columnNumber: 17
+                            lineNumber: 147,
+                            columnNumber: 11
                         }, undefined)
                     }, void 0, false, {
                         fileName: "src/components/profile-view/profile-view.jsx",
-                        lineNumber: 132,
-                        columnNumber: 13
+                        lineNumber: 146,
+                        columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modalDefault.default).Body, {
                         children: "Are you sure you want to delete your account permanantly?"
                     }, void 0, false, {
                         fileName: "src/components/profile-view/profile-view.jsx",
-                        lineNumber: 135,
-                        columnNumber: 13
+                        lineNumber: 149,
+                        columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modalDefault.default).Footer, {
                         children: [
@@ -47648,8 +47964,8 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                 children: "Yes"
                             }, void 0, false, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 137,
-                                columnNumber: 17
+                                lineNumber: 153,
+                                columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
                                 variant: "secondary",
@@ -47657,25 +47973,25 @@ const ProfileView = ({ user, token, setUser, movies, onLogout })=>{
                                 children: "No"
                             }, void 0, false, {
                                 fileName: "src/components/profile-view/profile-view.jsx",
-                                lineNumber: 138,
-                                columnNumber: 17
+                                lineNumber: 156,
+                                columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/profile-view/profile-view.jsx",
-                        lineNumber: 136,
-                        columnNumber: 13
+                        lineNumber: 152,
+                        columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/profile-view/profile-view.jsx",
-                lineNumber: 131,
-                columnNumber: 9
+                lineNumber: 145,
+                columnNumber: 7
             }, undefined)
         ]
     }, void 0, true);
 };
-_s(ProfileView, "RytTsqU3snOzmD/ze4hWFjemOmY=");
+_s(ProfileView, "nlEwVp/yqx6Eel3jgovSRHMGfas=");
 _c = ProfileView;
 var _c;
 $RefreshReg$(_c, "ProfileView");

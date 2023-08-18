@@ -37,7 +37,7 @@ export const MainView = () => {
     setSearchTerm(searchQuery);
 
     const filtered = movies.filter((movie) =>
-      movie.title.toLowerCase().includes(searchQuery)
+      movie.Title.toLowerCase().includes(searchQuery)
     );
 
     setFilteredMovies(filtered);
@@ -54,16 +54,16 @@ export const MainView = () => {
         const moviesFromApi = data.map((movie) => {
           return {
             id: movie._id,
-            Title: movie.Title,
-            ImagePath: movie.ImagePath,
-            Description: movie.Description,
+            Title: movie.Title, // Make sure "title" matches the API response property name
+            ImagePath: movie.ImagePath, // Adjust property name if needed
+            Description: movie.Description, // Adjust property name if needed
             Genre: {
-              Name: movie.Genre.Name,
+              Name: movie.Genre.Name, // Adjust property name if needed
             },
             Director: {
-              Name: movie.Director.Name,
+              Name: movie.Director.Name, // Adjust property name if needed
             },
-            Featured: movie.Featured.toString(),
+            Featured: movie.Featured.toString(), // Adjust property name if needed
           };
         });
         setMovies(moviesFromApi);
@@ -124,13 +124,27 @@ export const MainView = () => {
                   <Col>The list is empty!</Col>
                 ) : (
                   <Col md={8}>
-                    movies={movies}
-                    user={user}
-                    username={user.Username}
-                    favoriteMovies={user.FavoriteMovies}
+                    <MovieView
+                      movies={movies}
+                      user={user}
+                      setUser={setUser}
+                      token={token}
+                    />
                   </Col>
                 )}
               </>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProfileView
+                user={user}
+                token={token}
+                setUser={setUser}
+                movies={movies}
+                onLogout={handleLogout}
+              />
             }
           />
           <Route
