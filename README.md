@@ -10,6 +10,7 @@ existing server-side code (REST API and database).
 The deployed app can be viewed [here.](https://mysuperflix.netlify.app/)
 
 ## Description
+This is a React application that allows users to browse and interact with a collection of movies. Users can search for movies, view movie details, add movies to their favorites, and discover similar movies.
 
 ### Key Features
 
