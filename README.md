@@ -4,6 +4,7 @@
 
 Using React, build the client-side for an app called myFlix based on its
 existing server-side code (REST API and database).
+![img1920](https://github.com/juli20008/myFlix-client/blob/d9ade107bb2e38f877ed44302467680672515aff/MyFlix.PNG)
 
 ## Demo
 
